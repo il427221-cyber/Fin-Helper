@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FinHelper</string>
+    <string name="welcome">Welcome!</string>
+    <string name="vat">VAT</string>
+    <string name="personal_income_tax">Personal Income Tax</string>
+    <string name="income_tax">Income Tax</string>
+    <string name="taxes">Taxes</string>
+    <string name="percentImage">PercentImage</string>
+    <string name="return_back">Return back</string>
+</resources>

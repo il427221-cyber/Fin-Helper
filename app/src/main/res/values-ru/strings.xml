@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FinHelper</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="vat">НДС</string>
+    <string name="personal_income_tax">НДФЛ</string>
+    <string name="income_tax">Налог на прибыль</string>
+    <string name="taxes">Налоги</string>
+    <string name="percentImage">Картинка с процентом</string>
+    <string name="return_back">Назад</string>
+</resources>
