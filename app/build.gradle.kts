@@ -6,7 +6,7 @@ plugins {
 android {
     namespace = "ru.myproject.finhelper"
     compileSdk {
-        version = release(36) {
+        version = release(37) {
             minorApiLevel = 1
         }
     }
@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "ru.myproject.finhelper"
         minSdk = 23
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -57,4 +57,5 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.navigation.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }

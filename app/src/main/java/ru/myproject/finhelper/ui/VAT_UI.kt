@@ -12,32 +12,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.testing.TestNavHostController
-import ru.myproject.finhelper.R
 
 @Composable
-fun TaxesChoice(modifier: Modifier = Modifier,navController: NavController) {
+fun VATOperations(modifier: Modifier = Modifier,navController: NavController) {
     Column(
         modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextButton(onClick = {navController.navigate("VAT_UI")}) {
-            Text(stringResource(R.string.vat))
+        TextButton(onClick = {navController.navigate("VATCalc_UI")}) {
+            Text("Add VAT")
         }
         TextButton(onClick = {}) {
-            Text(stringResource(R.string.personal_income_tax))
-        }
-        TextButton(onClick = {}) {
-            Text(stringResource(R.string.income_tax))
+            Text("Extract VAT")
         }
     }
-
 }
+
 @Preview
 @Composable
-fun TaxesChoicePreview() {
+fun VATOperationsPreview() {
     FinHelperTheme {
         val testNavController = TestNavHostController(LocalContext.current)
         TaxesChoice(navController = testNavController)

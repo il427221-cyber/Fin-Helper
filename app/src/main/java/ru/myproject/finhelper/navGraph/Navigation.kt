@@ -13,7 +13,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ru.myproject.finhelper.TopAppBarBack
+import ru.myproject.finhelper.ui.CalculatorDisplay
+import ru.myproject.finhelper.ui.ShowVATAdded
 import ru.myproject.finhelper.ui.TaxesChoice
+import ru.myproject.finhelper.ui.VATOperations
 
 
 @SuppressLint("SuspiciousIndentation")
@@ -44,7 +47,13 @@ fun MyAppNavGraph() {
                     composable("TaxesUI") {
                         TaxesChoice(navController = navController)
                     }
-                    //TODO other screens
+                    composable("VAT_UI") {
+                        VATOperations(navController = navController)
+                    }
+                    composable("VATCalc_UI") {
+                        //TODO
+                    }
+
 
                 }
 
