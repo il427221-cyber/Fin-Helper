@@ -51,7 +51,7 @@ fun MyAppNavGraph() {
                         VATOperations(navController = navController)
                     }
                     composable("VATCalc_UI") {
-                        //TODO
+                        ShowVATAdded()
                     }
 
 
