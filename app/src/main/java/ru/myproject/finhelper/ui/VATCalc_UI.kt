@@ -8,114 +8,48 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import ru.myproject.finhelper.CustomKeyBoard
 import ru.myproject.finhelper.NumericInputField
-import ru.myproject.finhelper.R
-import ru.myproject.finhelper.repository.FinRepositoryImpl
-import ru.myproject.finhelper.ui.theme.FinHelperTheme
-import ru.myproject.finhelper.viewmodel.FinViewModel
-import ru.myproject.finhelper.viewmodel.FinViewModelFactory
-
+import ru.myproject.finhelper.NumericOutputField
 
 enum class ActiveField {
     SUM, TAX, NONE
 }
 @Composable
-fun ShowVATAdded(
-    modifier: Modifier = Modifier,
-    finViewModel: FinViewModel = viewModel(factory = FinViewModelFactory(FinRepositoryImpl()))
-) {
-    val currentVATAmount by finViewModel.vatAmount.collectAsState()
-    val currentTotalAmount by finViewModel.totalWithVat.collectAsState()
-
-
-}
-
-@Composable
 fun CalculatorDisplay(
-    vatAmount: Double,
-    totalWithVat: Double,
-    onCalculateClick: (sum: Double, tax: Double) -> Unit,
-    modifier: Modifier = Modifier)
-{
-    var sumInput by remember { mutableStateOf("") }
-    var taxInput by remember { mutableStateOf("") }
-    var activeField by remember { mutableStateOf(ActiveField.NONE) }
-
-    // Обработка нажатий на цифры
-    val handleNumberInput: (String) -> Unit = remember {
-        { digit ->
-            when (activeField) {
-                ActiveField.SUM -> sumInput += digit
-                ActiveField.TAX -> taxInput += digit
-                ActiveField.NONE -> {/*ничего не делаем*/}
-            }
-        }
-    }
-    //Обработка нажатий на запятую
-    val handleCommaClick: () -> Unit = remember {
-        {
-            when(activeField) {
-                ActiveField.SUM -> {
-                    if(!sumInput.contains('.') && !sumInput.contains(',')) sumInput+= "."
-                }
-                ActiveField.TAX -> {
-                    if(!taxInput.contains('.') && !taxInput.contains(',')) taxInput+= "."
-                }
-                ActiveField.NONE -> { /*ничего не делаем*/  }
-            }
-        }
-    }
-    //Обработка нажатий на кнопку с крестиком
-    val handleDeleteClick: () -> Unit = remember {
-        {
-            when(activeField) {
-                ActiveField.SUM -> if(sumInput.isNotEmpty()) sumInput = sumInput.dropLast(1)
-                ActiveField.TAX -> if(taxInput.isNotEmpty()) taxInput = taxInput.dropLast(1)
-                ActiveField.NONE -> { /*ничего не делаем*/  }
-            }
-        }
-    }
-    // Обработка нажатий на корзину
-    val handleClearClick: () -> Unit = remember {
-        {
-            sumInput = ""
-            taxInput = ""
-            activeField = ActiveField.NONE
-
-        }
-    }
-    val handleMoveCursorDown: () -> Unit = {
-        //TODO
-    }
-
-    val handleMoveCursorUp: () -> Unit = {
-       //TODO
-    }
-
-
+    currentVatAmount: Double,
+    currentTotalAmount: Double,
+    sumInputValue: String, // Текущее значение поля "Сумма"
+    taxInputValue: String, // Текущее значение поля "Ставка"
+    activeField: ActiveField,
+    onSumInputChanged: (String) -> Unit, // Колбэк для изменения sumInputValue
+    onTaxInputChanged: (String) -> Unit, // Колбэк для изменения taxInputValue
+    onActiveFieldChanged: (ActiveField) -> Unit, // Колбэк для оповещения о смене активного поля
+    onCalculateVATClick: (sum: Double, tax: Double) -> Unit,
+    onExtractVATClick: (sum: Double, tax: Double) -> Unit,
+    onNumberClick: (String) -> Unit,
+    onCommaClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onClearClick: () -> Unit,
+    onMoveCursorDownClick: () -> Unit,
+    onMoveCursorUpClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    sumFocusRequester: FocusRequester,
+    taxFocusRequester: FocusRequester
+) {
     Column(modifier = Modifier.fillMaxSize()) {// включает 2 Box
-
-        Box(modifier = Modifier
-            .weight(1f)
-            .fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(), contentAlignment = Alignment.Center
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -123,70 +57,82 @@ fun CalculatorDisplay(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 NumericInputField(
-                    text = "Сумма:",
-                    number = sumInput,
-                    onValueChange = { sumInput = it },
-                    textHint = "руб.",
-                    onFocusGained = {activeField = ActiveField.SUM}
+                    text = "Сумма\nруб.:",
+                    number = sumInputValue,
+                    onValueChange = onSumInputChanged,
+                    onFocusGained = {onActiveFieldChanged(ActiveField.SUM)},
+                    focusRequester = sumFocusRequester
                 )
 
-                Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                NumericInputField(
-                    text = "Ставка:",
-                    number = sumInput,
-                    onValueChange = { taxInput = it },
-                    textHint = "%",
-                    onFocusGained = {activeField = ActiveField.TAX}
+                    NumericInputField(
+                        text = "Ставка\n%:",
+                        number = taxInputValue,
+                        onValueChange = onTaxInputChanged,
+                        onFocusGained = { onActiveFieldChanged(ActiveField.TAX) },
+                        focusRequester = taxFocusRequester
                     )
 
-                Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                NumericInputField(
-                    text = "НДС:",
-                    number = sumInput,
-                    onValueChange = { sumInput = it },
-                    textHint = "руб.",
-                    onFocusGained = {activeField = ActiveField.SUM}
+                    NumericOutputField(
+                        text = "НДС:",
+                        value = "%.2f".format(currentVatAmount),
+                        textHint = "руб.",
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    NumericOutputField(
+                        text = "Итоговая\n сумма:",
+                        value = "%.2f".format(currentTotalAmount),
+                        textHint = "руб.",
+
+                        )
+
+                    Button(
+                        onClick = {
+                            val sum = sumInputValue.toDoubleOrNull() ?: 0.0
+                            val tax = taxInputValue.toDoubleOrNull() ?: 0.0
+                            onCalculateVATClick(sum, tax)
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Начислить НДС")
+                    }
+
+                    Button(
+                    onClick = {
+                        val sum = sumInputValue.toDoubleOrNull() ?: 0.0
+                        val tax = taxInputValue.toDoubleOrNull() ?: 0.0
+                        onExtractVATClick(sum, tax)
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Выделить НДС")
+                }
+
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(), contentAlignment = Alignment.Center
+            ) {
+                CustomKeyBoard(
+                    onNumberClick = onNumberClick,
+                    onCommaClick = onCommaClick,
+                    onDeleteClick = onDeleteClick,
+                    onClearClick = onClearClick,
+                    onMoveCursorDownClick = onMoveCursorDownClick,
+                    onMoveCursorUpClick = onMoveCursorUpClick
                 )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                NumericInputField(
-                    text = "Итоговая\n сумма:",
-                    number = sumInput,
-                    onValueChange = { sumInput = it },
-                    textHint = "руб.",
-                    onFocusGained = {activeField = ActiveField.SUM}
-                )
-                //TODO Buttons (ADD VAT, EXTRACT VAT)
             }
         }
-
-        Box(modifier = Modifier
-            .weight(1f)
-            .fillMaxWidth(), contentAlignment = Alignment.Center) {
-            CustomKeyBoard(
-                onNumberClick = handleNumberInput,
-                onCommaClick = handleCommaClick,
-                onDeleteClick = handleDeleteClick,
-                onClearClick = handleClearClick,
-                onMoveCursorDownClick = {},
-                onMoveCursorUpClick = {}
-            )
-        }
     }
-}
 
-//@Composable
-//@Preview(showBackground = true)
-//fun CalculatorDisplayPreview() {
-//    FinHelperTheme {
-//        CalculatorDisplay(
-////            vatAmount = 20.0,
-////            totalWithVat = 120.0,
-//            onCalculateClick = { sum, tax ->
-//                println("Кнопка 'Рассчитать НДС' нажата в Preview с суммой $sum и налогом $tax") })
-//    }
-//}
+
