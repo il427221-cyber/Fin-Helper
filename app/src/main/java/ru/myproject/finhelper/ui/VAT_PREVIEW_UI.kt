@@ -17,9 +17,12 @@ import ru.myproject.finhelper.viewmodel.FinViewModel
 import ru.myproject.finhelper.viewmodel.FinViewModelFactory
 
 @Composable
-fun ShowVATAdded(modifier: Modifier = Modifier,
+fun ShowVATAdded(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Modifier,
     finViewModel: FinViewModel = viewModel(factory = FinViewModelFactory(FinRepositoryImpl()))
 ) {
+    LaunchedEffect(Unit) {
+        onShowBottomBar(false)
+    }
     val currentVATAmount by finViewModel.vatAmount.collectAsState()
     val currentTotalAmount by finViewModel.totalWithVat.collectAsState()
 
@@ -79,12 +82,13 @@ fun ShowVATAdded(modifier: Modifier = Modifier,
         {
             sumInput = ""
             taxInput = ""
+            finViewModel.clearOutputFields()
             sumFocusRequester.requestFocus()
             activeField = ActiveField.SUM
         }
     }
-    // 5.Обработка нажатий на стрелку вниз
-    val handleMoveCursorDownClick: () -> Unit = remember {
+    // 5. Обработка нажатий на стрелки (вверх и вниз)
+    val handleMoveCursorClick: () -> Unit = remember {
         {
             when(activeField) {
                 ActiveField.SUM -> {
@@ -102,30 +106,12 @@ fun ShowVATAdded(modifier: Modifier = Modifier,
             }
         }
     }
-    // 6.Обработка нажатий на стрелку вверх
-    val handleMoveCursorUpClick: () -> Unit = remember {
-        {
-            when(activeField) {
-                ActiveField.SUM -> {
-                    taxFocusRequester.requestFocus()
-                    activeField = ActiveField.TAX
-                }
-                ActiveField.TAX -> {
-                    sumFocusRequester.requestFocus()
-                    activeField = ActiveField.SUM
-                }
-                ActiveField.NONE -> {
-                    sumFocusRequester.requestFocus()
-                    activeField = ActiveField.SUM
-                }
-            }
-        }
-    }
-    // 7.Обработка нажатий на кнопку начисления НДС
+
+    // 6.Обработка нажатий на кнопку начисления НДС
     val onCalculateVATButtonClick: (Double,Double) -> Unit = remember {
         {sum,tax -> finViewModel.calculate_VAT_And_Total(sum,tax) }
     }
-    // 8.Обработка нажатий на кнопку выделения НДС
+    // 7.Обработка нажатий на кнопку выделения НДС
     val onExtractVATButtonClick: (Double,Double) -> Unit = remember {
         {sum,tax -> finViewModel.extract_VAT_And_Total(sum,tax) }
     }
@@ -139,7 +125,6 @@ fun ShowVATAdded(modifier: Modifier = Modifier,
         taxInput = newValue
         activeField = ActiveField.TAX
     }
-
 
     val onActiveFieldChanged: (ActiveField) -> Unit = remember {
         {newActiveField ->
@@ -168,8 +153,7 @@ fun ShowVATAdded(modifier: Modifier = Modifier,
         onCommaClick = handleCommaClick,
         onDeleteClick = handleDeleteClick,
         onClearClick = handleClearClick,
-        onMoveCursorDownClick = handleMoveCursorDownClick,
-        onMoveCursorUpClick = handleMoveCursorUpClick,
+        onMoveCursorClick = handleMoveCursorClick,
         modifier = modifier,
         sumFocusRequester = sumFocusRequester,
         taxFocusRequester = taxFocusRequester
@@ -180,6 +164,6 @@ fun ShowVATAdded(modifier: Modifier = Modifier,
 @Composable
 fun ShowVATAddedPreview() {
     FinHelperTheme {
-        ShowVATAdded()
+        ShowVATAdded(onShowBottomBar = { })
     }
 }

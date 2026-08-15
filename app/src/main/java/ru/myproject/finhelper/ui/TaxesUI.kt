@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,13 +18,20 @@ import androidx.navigation.testing.TestNavHostController
 import ru.myproject.finhelper.R
 
 @Composable
-fun TaxesChoice(modifier: Modifier = Modifier,navController: NavController) {
+fun TaxesChoice(onShowBottomBar: (Boolean) -> Unit,
+                modifier: Modifier = Modifier,
+                navController: NavController) {
+
+    LaunchedEffect(Unit) {
+        onShowBottomBar(true)
+    }
+
     Column(
         modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextButton(onClick = {navController.navigate("VAT_UI")}) {
+        TextButton(onClick = {navController.navigate("VATCalc_UI")}) {
             Text(stringResource(R.string.vat))
         }
         TextButton(onClick = {}) {
@@ -40,6 +48,6 @@ fun TaxesChoice(modifier: Modifier = Modifier,navController: NavController) {
 fun TaxesChoicePreview() {
     FinHelperTheme {
         val testNavController = TestNavHostController(LocalContext.current)
-        TaxesChoice(navController = testNavController)
+        TaxesChoice(navController = testNavController, onShowBottomBar = { })
     }
 }

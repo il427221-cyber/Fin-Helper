@@ -38,8 +38,7 @@ fun CalculatorDisplay(
     onCommaClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onClearClick: () -> Unit,
-    onMoveCursorDownClick: () -> Unit,
-    onMoveCursorUpClick: () -> Unit,
+    onMoveCursorClick: () -> Unit,
     modifier: Modifier = Modifier,
     sumFocusRequester: FocusRequester,
     taxFocusRequester: FocusRequester
@@ -128,8 +127,8 @@ fun CalculatorDisplay(
                     onCommaClick = onCommaClick,
                     onDeleteClick = onDeleteClick,
                     onClearClick = onClearClick,
-                    onMoveCursorDownClick = onMoveCursorDownClick,
-                    onMoveCursorUpClick = onMoveCursorUpClick
+                    onMoveCursorDownClick = onMoveCursorClick,
+                    onMoveCursorUpClick = onMoveCursorClick
                 )
             }
         }

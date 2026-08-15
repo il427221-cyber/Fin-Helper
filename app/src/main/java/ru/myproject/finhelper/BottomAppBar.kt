@@ -15,7 +15,6 @@ import androidx.navigation.testing.TestNavHostController
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
 
-
 @Composable
 fun BottomAppBarHome(modifier: Modifier = Modifier,navController: NavController) {
     BottomAppBar(modifier = Modifier.padding(8.dp), actions = {

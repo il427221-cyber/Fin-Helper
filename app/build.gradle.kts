@@ -58,4 +58,5 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.navigation.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.capturable)
 }

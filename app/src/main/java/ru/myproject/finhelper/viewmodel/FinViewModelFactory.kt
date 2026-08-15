@@ -10,11 +10,12 @@ import ru.myproject.finhelper.repository.FinRepository
  */
 
 class FinViewModelFactory(private val finRepository: FinRepository): ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(FinViewModel:: class.java)) {
             @Suppress("UNCHECKED_CAST")
             return FinViewModel(finRepository) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        throw IllegalArgumentException("Unknown ViewModel class : $modelClass")
     }
 }
