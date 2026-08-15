@@ -15,6 +15,12 @@ class FinViewModel(private val finRepository: FinRepository): ViewModel() {
     private val _totalSum = MutableStateFlow<Double>(0.0)
     val totalWithVat: StateFlow<Double> = _totalSum
 
+    private val _sumInput = MutableStateFlow("")
+    val sumInput: StateFlow<String> = _sumInput
+
+    private val _taxInput = MutableStateFlow("")
+    val taxInput: StateFlow<String> = _taxInput
+
     fun calculate_VAT_And_Total(sum: Double, tax: Double) {
         viewModelScope.launch {
             val calculateVATAmount = finRepository.calculateVAT(sum, tax)
@@ -33,5 +39,10 @@ class FinViewModel(private val finRepository: FinRepository): ViewModel() {
             _vatAmount.value = extractVATAmount
             _totalSum.value = extractTotalWithoutVAT
         }
+    }
+
+    fun clearOutputFields() {
+        _vatAmount.value = 0.0
+        _totalSum.value = 0.0
     }
 }

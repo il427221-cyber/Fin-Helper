@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,7 +24,14 @@ import androidx.navigation.testing.TestNavHostController
 
 
 @Composable
-fun WelcomeContent(modifier: Modifier = Modifier,navController: NavController) {
+fun WelcomeContent(onShowBottomBar: (Boolean) -> Unit,
+                   modifier: Modifier = Modifier,
+                   navController: NavController) {
+
+    LaunchedEffect(Unit) {
+        onShowBottomBar(true)
+    }
+
     Column(modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
@@ -40,11 +48,14 @@ fun WelcomeContent(modifier: Modifier = Modifier,navController: NavController) {
     }
 }
 
-@Preview
+@Preview (showBackground = true)
 @Composable
 fun WelcomeContentPreview() {
     FinHelperTheme {
         val testNavController = TestNavHostController(LocalContext.current)
-        WelcomeContent(navController = testNavController)
+        WelcomeContent(
+            navController = testNavController,
+            onShowBottomBar = { }
+        )
     }
 }
