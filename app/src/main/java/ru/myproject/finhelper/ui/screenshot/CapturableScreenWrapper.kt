@@ -1,4 +1,4 @@
-package ru.myproject.finhelper
+package ru.myproject.finhelper.ui.screenshot
 
 import android.util.Log
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui
+package ru.myproject.finhelper.ui.vat
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

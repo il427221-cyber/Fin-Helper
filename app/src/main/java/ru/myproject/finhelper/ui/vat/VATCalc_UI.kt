@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui
+package ru.myproject.finhelper.ui.vat
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,9 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
-import ru.myproject.finhelper.CustomKeyBoard
-import ru.myproject.finhelper.NumericInputField
-import ru.myproject.finhelper.NumericOutputField
+import ru.myproject.finhelper.ui.keyboard.CustomKeyBoard
 
 enum class ActiveField {
     SUM, TAX, NONE

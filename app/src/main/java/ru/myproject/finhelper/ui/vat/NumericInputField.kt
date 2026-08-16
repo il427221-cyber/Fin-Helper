@@ -1,4 +1,4 @@
-package ru.myproject.finhelper
+package ru.myproject.finhelper.ui.vat
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.Composable

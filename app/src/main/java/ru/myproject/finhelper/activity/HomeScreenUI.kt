@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui
+package ru.myproject.finhelper.activity
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

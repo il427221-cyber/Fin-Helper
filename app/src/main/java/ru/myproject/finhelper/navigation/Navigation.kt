@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.navGraph
+package ru.myproject.finhelper.navigation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
@@ -6,18 +6,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import ru.myproject.finhelper.BottomAppBarHome
-import ru.myproject.finhelper.ui.WelcomeContent
+import ru.myproject.finhelper.ui.appBar.BottomAppBarHome
+import ru.myproject.finhelper.activity.WelcomeContent
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import ru.myproject.finhelper.ScreenShot
-import ru.myproject.finhelper.TopAppBarBack
-import ru.myproject.finhelper.ui.TaxesChoice
+import ru.myproject.finhelper.ui.screenshot.ScreenShot
+import ru.myproject.finhelper.ui.appBar.TopAppBarBack
 
 
 @SuppressLint("SuspiciousIndentation")
@@ -34,9 +34,14 @@ fun MyAppNavGraph() {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
+        var screenShotTriggerCapture: (() -> Unit)? by remember { mutableStateOf(null) }
+
         Scaffold(
-            topBar = {TopAppBarBack(navController = navController, currentRoute = currentRoute, onCaptureClick = {} )},
-            bottomBar = { if(showBottomBar) BottomAppBarHome(navController = navController) }
+            topBar = {TopAppBarBack(navController = navController,
+                currentRoute = currentRoute,
+                onCaptureClick = {screenShotTriggerCapture?.invoke()} )
+                     },
+            bottomBar = { if (showBottomBar) BottomAppBarHome(navController = navController) }
         ) { innerPadding ->
             NavHost(
                 navController = navController,
@@ -56,7 +61,10 @@ fun MyAppNavGraph() {
                     }
                     composable("VATCalc_UI") {
                         ScreenShot(navController = navController, currentRoute = currentRoute,
-                            onShowBottomBar = {show -> showBottomBar = show})
+                            onShowBottomBar = {show -> showBottomBar = show},
+                            onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger }
+
+                        )
                     }
                 }
         }
