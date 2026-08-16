@@ -1,10 +1,10 @@
-package ru.myproject.finhelper
+package ru.myproject.finhelper.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import ru.myproject.finhelper.navGraph.MyAppNavGraph
+import ru.myproject.finhelper.navigation.MyAppNavGraph
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,4 +18,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

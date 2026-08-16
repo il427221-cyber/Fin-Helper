@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui
+package ru.myproject.finhelper.navigation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

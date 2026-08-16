@@ -1,4 +1,4 @@
-package ru.myproject.finhelper
+package ru.myproject.finhelper.ui.keyboard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
