@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
 import ru.myproject.finhelper.ui.keyboard.CustomKeyBoard
-import ru.myproject.finhelper.ui.vat.NumericInputField
-import ru.myproject.finhelper.ui.vat.NumericOutputField
+import ru.myproject.finhelper.ui.numericfield.NumericInputField
+import ru.myproject.finhelper.ui.numericfield.NumericOutputField
 
 enum class ActiveField {
     SUM, DEDUCTION, TAX, NONE
@@ -103,8 +103,6 @@ fun CalculatorPersonalTax(
                     value = "%.2f".format(currentTotalAmount),
                     textHint = "руб.",
                     )
-
-                Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
                     onClick = {

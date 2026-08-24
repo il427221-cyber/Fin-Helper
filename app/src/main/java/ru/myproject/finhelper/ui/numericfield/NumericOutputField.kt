@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.vat
+package ru.myproject.finhelper.ui.numericfield
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

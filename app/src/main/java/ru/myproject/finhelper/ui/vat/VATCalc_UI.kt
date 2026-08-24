@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
 import ru.myproject.finhelper.ui.keyboard.CustomKeyBoard
+import ru.myproject.finhelper.ui.numericfield.NumericInputField
+import ru.myproject.finhelper.ui.numericfield.NumericOutputField
 
 enum class ActiveField {
     SUM, TAX, NONE
@@ -59,36 +61,36 @@ fun CalculatorDisplay(
                     text = "Сумма\nруб.:",
                     number = sumInputValue,
                     onValueChange = onSumInputChanged,
-                    onFocusGained = {onActiveFieldChanged(ActiveField.SUM)},
+                    onFocusGained = { onActiveFieldChanged(ActiveField.SUM) },
                     focusRequester = sumFocusRequester
                 )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    NumericInputField(
-                        text = "Ставка\n%:",
-                        number = taxInputValue,
-                        onValueChange = onTaxInputChanged,
-                        onFocusGained = { onActiveFieldChanged(ActiveField.TAX) },
-                        focusRequester = taxFocusRequester
-                    )
+                NumericInputField(
+                    text = "Ставка\n%:",
+                    number = taxInputValue,
+                    onValueChange = onTaxInputChanged,
+                    onFocusGained = { onActiveFieldChanged(ActiveField.TAX) },
+                    focusRequester = taxFocusRequester
+                )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    NumericOutputField(
-                        text = "НДС:",
-                        value = "%.2f".format(currentVatAmount),
-                        textHint = "руб.",
-                    )
+                NumericOutputField(
+                    text = "НДС:",
+                    value = "%.2f".format(currentVatAmount),
+                    textHint = "руб.",
+                )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    NumericOutputField(
-                        text = "Итоговая\n сумма:",
-                        value = "%.2f".format(currentTotalAmount),
-                        textHint = "руб.",
+                NumericOutputField(
+                    text = "Итоговая\n сумма:",
+                    value = "%.2f".format(currentTotalAmount),
+                    textHint = "руб.",
 
-                        )
+                    )
 
                     Button(
                         onClick = {
