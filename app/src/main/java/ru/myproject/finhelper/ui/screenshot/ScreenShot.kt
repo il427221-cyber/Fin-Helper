@@ -16,13 +16,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import dev.shreyaspatil.capturable.capturable
-import ru.myproject.finhelper.repository.FinRepositoryImpl
-import ru.myproject.finhelper.ui.vat.ShowVATAdded
-import ru.myproject.finhelper.viewmodel.FinViewModel
-import ru.myproject.finhelper.viewmodel.FinViewModelFactory
 import androidx.compose.ui.graphics.asAndroidBitmap
 
 @SuppressLint("SuspiciousIndentation")
@@ -32,9 +27,9 @@ fun ScreenShot(
     navController: NavController,
     currentRoute: String?,
     onShowBottomBar: (Boolean) -> Unit,
-    onTriggerCaptureReady: (() -> Unit) -> Unit){
+    onTriggerCaptureReady: (() -> Unit) -> Unit,
+    contentToCapture: @Composable (Modifier) -> Unit){
 
-    val finViewModel: FinViewModel = viewModel(factory = FinViewModelFactory(FinRepositoryImpl()))
     // Получаем контекст для сохранения/шаринга
     val context = LocalContext.current
     // Состояние для хранения захваченного скриншота и отображения диалога
@@ -65,11 +60,7 @@ fun ScreenShot(
                     .padding(paddingValues) // Применяем отступы от Scaffold
                     .capturable(captureController) // <-- Применяем модификатор захвата к этому Column
             ) {
-                ShowVATAdded(
-                    onShowBottomBar = onShowBottomBar,
-                    modifier = Modifier.fillMaxSize(),
-                    finViewModel = finViewModel
-                )
+                contentToCapture(Modifier.fillMaxSize())
             }
         }
     }

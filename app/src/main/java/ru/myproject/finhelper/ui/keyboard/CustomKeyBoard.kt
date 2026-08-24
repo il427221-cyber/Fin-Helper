@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
-import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.Backspace
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -49,7 +49,7 @@ fun CustomKeyBoard(
             Button(onClick = { onNumberClick("3") }) { Text("3") }
 
             Button({ onDeleteClick() }) {
-                Icon(Icons.Outlined.Clear, contentDescription = "Delete")
+                Icon(Icons.Outlined.Backspace, contentDescription = "Delete")
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
