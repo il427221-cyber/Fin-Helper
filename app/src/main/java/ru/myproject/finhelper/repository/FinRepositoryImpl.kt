@@ -19,4 +19,14 @@ class FinRepositoryImpl: FinRepository {
         return sum - vatAmount
     }
 
+    override fun calculatePersonalTax(sum: Double, deduction: Double, tax: Double): Double {
+        val taxValue = tax / 100
+        return (sum - deduction) * taxValue
+    }
+
+    override fun calculateTotalSum_Without_PersonalTax(sum: Double, deduction: Double,tax: Double): Double {
+        val vatAmount = calculatePersonalTax(sum,deduction,tax)
+        return sum - vatAmount
+    }
+
 }

@@ -10,14 +10,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import ru.myproject.finhelper.ui.appBar.BottomAppBarHome
 import ru.myproject.finhelper.activity.WelcomeContent
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import ru.myproject.finhelper.repository.FinRepositoryImpl
 import ru.myproject.finhelper.ui.screenshot.ScreenShot
 import ru.myproject.finhelper.ui.appBar.TopAppBarBack
+import ru.myproject.finhelper.ui.vat.ShowVATAdded
+import ru.myproject.finhelper.viewmodel.FinViewModel
+import ru.myproject.finhelper.viewmodel.FinViewModelFactory
 
 
 @SuppressLint("SuspiciousIndentation")
@@ -35,6 +40,8 @@ fun MyAppNavGraph() {
         val currentRoute = navBackStackEntry?.destination?.route
 
         var screenShotTriggerCapture: (() -> Unit)? by remember { mutableStateOf(null) }
+    //Добавлена viewModel
+    val finViewModel: FinViewModel = viewModel(factory = FinViewModelFactory(FinRepositoryImpl()))
 
         Scaffold(
             topBar = {TopAppBarBack(navController = navController,
@@ -62,9 +69,18 @@ fun MyAppNavGraph() {
                     composable("VATCalc_UI") {
                         ScreenShot(navController = navController, currentRoute = currentRoute,
                             onShowBottomBar = {show -> showBottomBar = show},
-                            onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger }
+                            onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
+
+                            { modifier -> // contentToCapture - здесь мы его определяем
+                                ShowVATAdded(
+                                    onShowBottomBar = {show -> showBottomBar = show},
+                                    modifier = modifier,
+                                    finViewModel = finViewModel // Передаем finViewModel, как обычно
+                                )
+                            }
 
                         )
+
                     }
                 }
         }

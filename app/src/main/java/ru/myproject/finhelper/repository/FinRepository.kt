@@ -5,4 +5,8 @@ interface FinRepository {
     fun calculateTotalSumWithVAT(sum: Double,tax: Double): Double
     fun extractVAT(sum: Double,tax: Double): Double
     fun extractSumWithoutVAT(sum: Double,tax: Double): Double
+
+    fun calculatePersonalTax(sum:Double,deduction:Double, tax: Double): Double
+
+    fun calculateTotalSum_Without_PersonalTax(sum: Double,deduction:Double,tax: Double): Double
 }

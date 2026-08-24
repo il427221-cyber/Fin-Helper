@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
     fun NumericInputField(
@@ -42,11 +41,10 @@ import androidx.compose.ui.unit.sp
                 val interactionSource = remember { MutableInteractionSource() }
     // Используем TextFieldValue для управления текстом и курсором
     var textFieldValue by remember {
-        val initialText = number
         mutableStateOf(
             TextFieldValue(
-                text = initialText,
-                selection = TextRange(initialText.length)
+                text = number,
+                selection = TextRange(number.length)
             )
         )
     }
@@ -101,7 +99,6 @@ import androidx.compose.ui.unit.sp
                     interactionSource = interactionSource,
                     enabled = true, // Поле должно выглядеть активным
                 )
-                    innerTextField() // Вызов Composable content BasicTextField
             }
         )
     }
