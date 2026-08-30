@@ -29,4 +29,13 @@ class FinRepositoryImpl: FinRepository {
         return sum - vatAmount
     }
 
+    override fun calculatePropertyTax(propertyValue: Double, area: Double, tax: Double,
+                                      share: Double, period: Double): Double {
+       val taxableArea = area - 20.0
+       val cadastralValue = propertyValue / area
+       val taxableAreaValue = cadastralValue * taxableArea
+       val totalTax = taxableAreaValue * tax / 100.0 * share / 100.0 * period / 12.0
+       return totalTax
+    }
+
 }

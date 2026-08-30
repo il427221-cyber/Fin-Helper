@@ -1,17 +1,28 @@
 package ru.myproject.finhelper.ui.numericfield
 
+import android.R.attr.textStyle
+import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
@@ -62,7 +74,7 @@ import androidx.compose.ui.unit.sp
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        Text(text = text, style = TextStyle(fontSize = 20.sp))
+        Text(text = text, style = TextStyle(fontSize = 14.sp))
         Spacer(modifier = Modifier.width(12.dp))
 
         // Основной компонент для ввода текста и отображения курсора
@@ -78,7 +90,8 @@ import androidx.compose.ui.unit.sp
                 onValueChange(newText)
             },
             singleLine = true,
-            modifier = Modifier.weight(1f).focusRequester(focusRequester)
+            modifier = Modifier
+                .weight(1f).focusRequester(focusRequester)
                 .onFocusChanged { focusState ->
                     if (focusState.hasFocus) {
                         onFocusGained()
@@ -89,7 +102,7 @@ import androidx.compose.ui.unit.sp
             readOnly = true, // Блокировка системной клавиатуры
             interactionSource = interactionSource,
             // decorationBox для обертывания BasicTextField в стиль OutlinedTextField
-            decorationBox = { innerTextField ->
+                decorationBox = { innerTextField ->
                 OutlinedTextField(
                     value = textFieldValue.text, // OutlinedTextField показывает текст из BasicTextField
                     onValueChange = { /* onValueChange здесь не используется, ввод через BasicTextField */ },

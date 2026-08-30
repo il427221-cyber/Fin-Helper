@@ -20,8 +20,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import ru.myproject.finhelper.repository.FinRepositoryImpl
 import ru.myproject.finhelper.ui.screenshot.ScreenShot
 import ru.myproject.finhelper.ui.appBar.TopAppBarBack
-import ru.myproject.finhelper.ui.income_tax.ShowPersonalTax
-import ru.myproject.finhelper.ui.vat.ShowVATAdded
+import ru.myproject.finhelper.ui.taxes.income_tax.ShowPersonalTax
+import ru.myproject.finhelper.ui.taxes.property_tax.ShowPropertyTax
+import ru.myproject.finhelper.ui.taxes.vat.ShowVATAdded
 import ru.myproject.finhelper.viewmodel.FinViewModel
 import ru.myproject.finhelper.viewmodel.FinViewModelFactory
 
@@ -92,7 +93,24 @@ fun MyAppNavGraph() {
                                 ShowPersonalTax(
                                     onShowBottomBar = {show -> showBottomBar = show},
                                     modifier = modifier,
-                                    finViewModel = finViewModel // Передаем finViewModel, как обычно
+                                    finViewModel = finViewModel
+                                )
+                            }
+
+                        )
+
+                    }
+
+                    composable("PropertyTaxCalc") {
+                        ScreenShot(navController = navController, currentRoute = currentRoute,
+                            onShowBottomBar = {show -> showBottomBar = show},
+                            onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
+
+                            { modifier ->
+                                ShowPropertyTax(
+                                    onShowBottomBar = {show -> showBottomBar = show},
+                                    modifier = modifier,
+                                    finViewModel = finViewModel
                                 )
                             }
 

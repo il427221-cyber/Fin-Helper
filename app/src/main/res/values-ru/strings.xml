@@ -8,4 +8,5 @@
     <string name="taxes">Налоги</string>
     <string name="percentImage">Картинка с процентом</string>
     <string name="return_back">Назад</string>
+    <string name="personal_property_tax">Налог на имущество</string>
 </resources>

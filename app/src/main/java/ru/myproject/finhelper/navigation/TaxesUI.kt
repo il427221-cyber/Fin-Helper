@@ -37,8 +37,8 @@ fun TaxesChoice(onShowBottomBar: (Boolean) -> Unit,
         TextButton(onClick = {navController.navigate("PersonalTaxCalc_UI")}) {
             Text(stringResource(R.string.personal_income_tax))
         }
-        TextButton(onClick = {}) {
-            Text(stringResource(R.string.income_tax))
+        TextButton(onClick = {navController.navigate("PropertyTaxCalc")}) {
+            Text(stringResource(R.string.personal_property_tax))
         }
     }
 

@@ -10,18 +10,10 @@ import kotlinx.coroutines.launch
 import ru.myproject.finhelper.repository.FinRepository
 
 class FinViewModel(private val finRepository: FinRepository): ViewModel() {
-    private val _vatAmount = MutableStateFlow<Double>(0.0)
-    val vatAmount: StateFlow<Double> = _vatAmount
-    private val _totalSum = MutableStateFlow<Double>(0.0)
-    val totalWithVat: StateFlow<Double> = _totalSum
-
-    private val _sumInput = MutableStateFlow("")
-    val sumInput: StateFlow<String> = _sumInput
-
-    private val _deductionInput = MutableStateFlow("")
-    val deductionInput: StateFlow<String> = _deductionInput
-    private val _taxInput = MutableStateFlow("")
-    val taxInput: StateFlow<String> = _taxInput
+    private val _taxAmount = MutableStateFlow (0.0)
+    val taxAmount: StateFlow<Double> = _taxAmount
+    private val _totalSum = MutableStateFlow (0.0)
+    val totalWithTax: StateFlow<Double> = _totalSum
 
     private val _UIMessages = MutableSharedFlow<String>()
     val uiMessages: SharedFlow<String> = _UIMessages
@@ -37,7 +29,7 @@ class FinViewModel(private val finRepository: FinRepository): ViewModel() {
                 val calculateVATAmount = finRepository.calculateVAT(sum, tax)
                 val calculateTotalWithVAT = finRepository.calculateTotalSumWithVAT(sum, tax)
 
-                _vatAmount.value = calculateVATAmount
+                _taxAmount.value = calculateVATAmount
                 _totalSum.value = calculateTotalWithVAT
             }
         }
@@ -53,7 +45,7 @@ class FinViewModel(private val finRepository: FinRepository): ViewModel() {
                 val extractVATAmount = finRepository.extractVAT(sum, tax)
                 val extractTotalWithoutVAT = finRepository.extractSumWithoutVAT(sum, tax)
 
-                _vatAmount.value = extractVATAmount
+                _taxAmount.value = extractVATAmount
                 _totalSum.value = extractTotalWithoutVAT
             }
         }
@@ -71,13 +63,39 @@ class FinViewModel(private val finRepository: FinRepository): ViewModel() {
             val extractSumWithoutPersonalTax =
                 finRepository.calculateTotalSum_Without_PersonalTax(sum, deduction, tax)
 
-            _vatAmount.value = calculatePersonalTax
+            _taxAmount.value = calculatePersonalTax
             _totalSum.value = extractSumWithoutPersonalTax
         }
         }
     }
+
+    fun calculate_PropertyTax(propertyValue: Double, area: Double, tax: Double,
+                              share: Double, period: Double) {
+        if(area <= 20.0) {
+            viewModelScope.launch {
+                _UIMessages.emit("Налог не начисляется, если площадь меньше или равна 20 кв.м")
+            }
+            return
+        }
+        if(propertyValue == 0.0 || tax == 0.0 || share == 0.0 || period == 0.0) {
+            viewModelScope.launch {
+                _UIMessages.emit("Заполните все поля: введите значения больше нуля")
+            }
+            return
+        }
+        if(period > 12) {
+            viewModelScope.launch {
+                _UIMessages.emit("Введите число от 1 до 12")
+            }
+            return
+        }
+        viewModelScope.launch {
+            val calculatePropertyTax = finRepository.calculatePropertyTax(propertyValue,area, tax, share, period)
+            _taxAmount.value = calculatePropertyTax
+        }
+    }
     fun clearOutputFields() {
-        _vatAmount.value = 0.0
+        _taxAmount.value = 0.0
         _totalSum.value = 0.0
     }
 }
