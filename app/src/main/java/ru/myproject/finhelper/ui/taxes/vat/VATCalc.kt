@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.vat
+package ru.myproject.finhelper.ui.taxes.vat
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

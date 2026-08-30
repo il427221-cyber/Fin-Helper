@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.income_tax
+package ru.myproject.finhelper.ui.taxes.income_tax
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

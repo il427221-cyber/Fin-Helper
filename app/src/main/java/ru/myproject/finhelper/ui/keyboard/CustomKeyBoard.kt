@@ -14,13 +14,18 @@ import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.Backspace
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.myproject.finhelper.R
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
 @Composable
@@ -97,7 +102,11 @@ fun CustomKeyBoard(
             Button(onClick = { onNumberClick("00") }) { Text("00") }
             Button(onClick = { onCommaClick() }) { Text(",") }
 
-            Button({ onClearClick() }) {
+            Button({ onClearClick() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.my_light_red)
+                )
+                ) {
                 Icon(Icons.Outlined.Delete, contentDescription = "Clear all")
             }
         }

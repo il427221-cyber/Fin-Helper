@@ -41,7 +41,8 @@ fun TopAppBarBack(
         },
         actions = {
             if(currentRoute == "VATCalc_UI"
-                || currentRoute == "PersonalTaxCalc_UI") {
+                || currentRoute == "PersonalTaxCalc_UI"
+                || currentRoute == "PropertyTaxCalc") {
                 IconButton(onClick = onCaptureClick) {
                     Icon(
                         Icons.Filled.Screenshot,

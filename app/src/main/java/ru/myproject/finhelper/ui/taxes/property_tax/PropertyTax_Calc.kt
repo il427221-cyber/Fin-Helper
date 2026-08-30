@@ -1,0 +1,170 @@
+package ru.myproject.finhelper.ui.taxes.property_tax
+
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.unit.dp
+import ru.myproject.finhelper.ui.keyboard.CustomKeyBoard
+import ru.myproject.finhelper.ui.numericfield.NumericInputField
+import ru.myproject.finhelper.ui.numericfield.NumericOutputField
+
+enum class ActiveField {
+    PROPERTY, AREA, TAX, SHARE, PERIOD, NONE
+}
+@Composable
+fun CalculatorPropertyTax(
+    currentTaxAmount: Double,
+    propertyInputValue: String, // Текущее значение поля "Имущество"
+    areaInputValue: String, // Текущее значение поля "Площадь"
+    taxInputValue: String, // Текущее значение поля "Ставка"
+    shareInputValue: String, // Текущее значение поля "Доля"
+    periodInputValue: String, // Текущее значение поля "Период"
+    activeField: ActiveField,
+    onPropertyInputChanged: (String) -> Unit, // Колбэк для изменения propertyInputValue
+    onAreaInputChanged: (String) -> Unit, // Колбэк для изменения areaInputValue
+    onTaxInputChanged: (String) -> Unit, // Колбэк для изменения taxInputValue
+    onShareInputChanged: (String) -> Unit, // Колбэк для изменения shareInputValue
+    onPeriodInputChanged: (String) -> Unit, // Колбэк для изменения periodInputValue
+    onActiveFieldChanged: (ActiveField) -> Unit, // Колбэк для оповещения о смене активного поля
+    onCalculateTaxClick: (property: Double, area: Double, tax: Double, share: Double, period: Double) -> Unit,
+    onNumberClick: (String) -> Unit,
+    onCommaClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onClearClick: () -> Unit,
+    onMoveCursorDownClick: () -> Unit,
+    onMoveCursorUpClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    propertyFocusRequester: FocusRequester,
+    areaFocusRequester: FocusRequester,
+    taxFocusRequester: FocusRequester,
+    shareFocusRequester: FocusRequester,
+    periodFocusRequester: FocusRequester
+
+) {
+    Column(modifier = Modifier.fillMaxSize()) {// включает 2 Box
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(), contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+
+                    NumericInputField(
+                        text = "Стоимость\nжилья(руб.):",
+                        number = propertyInputValue,
+                        onValueChange = onPropertyInputChanged,
+                        onFocusGained = {onActiveFieldChanged(ActiveField.PROPERTY)},
+                        focusRequester = propertyFocusRequester,
+                        modifier = Modifier
+                            .weight(0.6f)
+                    )
+
+                    NumericInputField(
+                        text = "Площадь\nкв.м.:",
+                        number = areaInputValue,
+                        onValueChange = onAreaInputChanged,
+                        onFocusGained = { onActiveFieldChanged(ActiveField.AREA) },
+                        focusRequester = areaFocusRequester,
+                        modifier = Modifier
+                            .weight(0.4f)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                NumericInputField(
+                    text = "Ставка\n%:",
+                    number = taxInputValue,
+                    onValueChange = onTaxInputChanged,
+                    onFocusGained = { onActiveFieldChanged(ActiveField.TAX) },
+                    focusRequester = taxFocusRequester,
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                NumericInputField(
+                    text = "Доля\n%:",
+                    number = shareInputValue,
+                    onValueChange = onShareInputChanged,
+                    onFocusGained = { onActiveFieldChanged(ActiveField.SHARE) },
+                    focusRequester = shareFocusRequester,
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                NumericInputField(
+                    text = "Период\nвладения (мес.в год):",
+                    number = periodInputValue,
+                    onValueChange = onPeriodInputChanged,
+                    onFocusGained = { onActiveFieldChanged(ActiveField.PERIOD) },
+                    focusRequester = periodFocusRequester,
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                NumericOutputField(
+                    text = "Налог:",
+                    value = "%.2f".format(currentTaxAmount),
+                    textHint = "руб.",
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Button(
+                    onClick = {
+                        val property = propertyInputValue.toDoubleOrNull() ?: 0.0
+                        val area = areaInputValue.toDoubleOrNull() ?: 0.0
+                        val tax = taxInputValue.toDoubleOrNull() ?: 0.0
+                        val share = shareInputValue.toDoubleOrNull() ?: 0.0
+                        val period = periodInputValue.toDoubleOrNull() ?: 0.0
+
+                        onCalculateTaxClick(property, area,tax, share, period)
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Рассчитать")
+                }
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(), contentAlignment = Alignment.Center
+        ) {
+            CustomKeyBoard(
+                onNumberClick = onNumberClick,
+                onCommaClick = onCommaClick,
+                onDeleteClick = onDeleteClick,
+                onClearClick = onClearClick,
+                onMoveCursorDownClick = onMoveCursorDownClick,
+                onMoveCursorUpClick = onMoveCursorUpClick
+            )
+        }
+    }
+}

@@ -9,4 +9,11 @@ interface FinRepository {
     fun calculatePersonalTax(sum:Double,deduction:Double, tax: Double): Double
 
     fun calculateTotalSum_Without_PersonalTax(sum: Double,deduction:Double,tax: Double): Double
+
+    fun calculatePropertyTax(
+        propertyValue: Double,
+        area: Double,
+        tax: Double,
+        share: Double,
+        period: Double): Double
 }
