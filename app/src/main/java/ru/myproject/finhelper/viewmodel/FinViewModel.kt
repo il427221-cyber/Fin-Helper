@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.myproject.finhelper.repository.FinRepository
 
-class FinViewModel(private val finRepository: FinRepository): ViewModel() {
+class FinViewModel(
+    private val finRepository: FinRepository): ViewModel() {
     private val _taxAmount = MutableStateFlow (0.0)
     val taxAmount: StateFlow<Double> = _taxAmount
     private val _totalSum = MutableStateFlow (0.0)
@@ -57,15 +58,23 @@ class FinViewModel(private val finRepository: FinRepository): ViewModel() {
                 _UIMessages.emit("Введите сумму больше нуля")
             }
             return
-        } else {
-        viewModelScope.launch {
-            val calculatePersonalTax = finRepository.calculatePersonalTax(sum, deduction, tax)
-            val extractSumWithoutPersonalTax =
-                finRepository.calculateTotalSum_Without_PersonalTax(sum, deduction, tax)
-
-            _taxAmount.value = calculatePersonalTax
-            _totalSum.value = extractSumWithoutPersonalTax
         }
+
+        if(deduction < sum) {
+            viewModelScope.launch {
+                val calculatePersonalTax = finRepository.calculatePersonalTax(sum, deduction, tax)
+                val extractSumWithoutPersonalTax =
+                    finRepository.calculateTotalSum_Without_PersonalTax(sum, deduction, tax)
+
+                _taxAmount.value = calculatePersonalTax
+                _totalSum.value = extractSumWithoutPersonalTax
+            }
+        } else {
+            _taxAmount.value = 0.0
+            _totalSum.value = 0.0
+            viewModelScope.launch {
+                _UIMessages.emit("НДФЛ не будет начисляться, т.к. вычеты больше или равны сумме")
+            }
         }
     }
 

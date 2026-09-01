@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.numericfield
+package ru.myproject.finhelper.features.numericfield
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,18 +27,18 @@ fun NumericOutputField(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center)
     {
-        Text(text = text, style = TextStyle(fontSize = 20.sp))
+        Text(text = text, style = TextStyle(fontSize = 16.sp))
         Spacer(modifier = Modifier.width(12.dp))
 
         Text(
             text = value,
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f),
-            style = TextStyle(fontSize = 20.sp)
+            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
         )
 
         Spacer(modifier = Modifier.width(12.dp))
-        Text(text = textHint, style = TextStyle(fontSize = 20.sp))
+        Text(text = textHint, style = TextStyle(fontSize = 16.sp))
     }
 }
 

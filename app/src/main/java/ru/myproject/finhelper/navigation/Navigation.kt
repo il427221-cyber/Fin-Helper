@@ -10,40 +10,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
-import ru.myproject.finhelper.ui.appBar.BottomAppBarHome
+import ru.myproject.finhelper.features.appBar.BottomAppBarHome
 import ru.myproject.finhelper.activity.WelcomeContent
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import ru.myproject.finhelper.repository.FinRepositoryImpl
-import ru.myproject.finhelper.ui.screenshot.ScreenShot
-import ru.myproject.finhelper.ui.appBar.TopAppBarBack
+import ru.myproject.finhelper.features.screenshot.ScreenShot
+import ru.myproject.finhelper.features.appBar.TopAppBarBack
+import ru.myproject.finhelper.ui.profit.roi.ShowROI
 import ru.myproject.finhelper.ui.taxes.income_tax.ShowPersonalTax
 import ru.myproject.finhelper.ui.taxes.property_tax.ShowPropertyTax
 import ru.myproject.finhelper.ui.taxes.vat.ShowVATAdded
-import ru.myproject.finhelper.viewmodel.FinViewModel
-import ru.myproject.finhelper.viewmodel.FinViewModelFactory
 
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun MyAppNavGraph() {
-
+fun MyAppNavGraph(appViewModelFactory: ViewModelProvider.Factory) {
     var showBottomBar by rememberSaveable() { mutableStateOf(false) }
     val navController = rememberNavController()
-
     /*Для TopBar
     Позволяет следить за текущим стеком навигации.
     При изменении параметра route Compose может перерисовывать интерфейс
      */
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-
         var screenShotTriggerCapture: (() -> Unit)? by remember { mutableStateOf(null) }
-    //Добавлена viewModel
-    val finViewModel: FinViewModel = viewModel(factory = FinViewModelFactory(FinRepositoryImpl()))
 
         Scaffold(
             topBar = {TopAppBarBack(navController = navController,
@@ -56,7 +49,6 @@ fun MyAppNavGraph() {
                 navController = navController,
                 startDestination = "HomeScreenUI",
                 modifier = Modifier.padding(innerPadding))
-
                 {
                     composable("HomeScreenUI") {
                         WelcomeContent(
@@ -68,54 +60,62 @@ fun MyAppNavGraph() {
                             onShowBottomBar = {show -> showBottomBar = show},
                             navController = navController)
                     }
+                    composable("ProfitUI") {
+                        ProfitChoice(
+                            onShowBottomBar = {show -> showBottomBar = show},
+                            navController = navController)
+                    }
                     composable("VATCalc_UI") {
                         ScreenShot(navController = navController, currentRoute = currentRoute,
                             onShowBottomBar = {show -> showBottomBar = show},
                             onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
-
                             { modifier -> // contentToCapture - здесь мы его определяем
                                 ShowVATAdded(
                                     onShowBottomBar = {show -> showBottomBar = show},
                                     modifier = modifier,
-                                    finViewModel = finViewModel // Передаем finViewModel, как обычно
+                                    finViewModelFactory = appViewModelFactory
                                 )
                             }
-
                         )
-
                     }
                     composable("PersonalTaxCalc_UI") {
                         ScreenShot(navController = navController, currentRoute = currentRoute,
                             onShowBottomBar = {show -> showBottomBar = show},
                             onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
-
                             { modifier ->
                                 ShowPersonalTax(
                                     onShowBottomBar = {show -> showBottomBar = show},
                                     modifier = modifier,
-                                    finViewModel = finViewModel
+                                    finViewModelFactory = appViewModelFactory
                                 )
                             }
-
                         )
-
                     }
-
                     composable("PropertyTaxCalc") {
                         ScreenShot(navController = navController, currentRoute = currentRoute,
                             onShowBottomBar = {show -> showBottomBar = show},
                             onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
-
                             { modifier ->
                                 ShowPropertyTax(
                                     onShowBottomBar = {show -> showBottomBar = show},
                                     modifier = modifier,
-                                    finViewModel = finViewModel
+                                    finViewModelFactory = appViewModelFactory
                                 )
                             }
-
                         )
-
+                    }
+                    composable("ROI_Render") {
+                        ScreenShot(navController = navController, currentRoute = currentRoute,
+                            onShowBottomBar = {show -> showBottomBar = show},
+                            onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
+                            { modifier ->
+                                ShowROI(
+                                    onShowBottomBar = {show -> showBottomBar = show},
+                                    modifier = modifier,
+                                    profitViewModelFactory = appViewModelFactory
+                                )
+                            }
+                        )
                     }
                 }
         }

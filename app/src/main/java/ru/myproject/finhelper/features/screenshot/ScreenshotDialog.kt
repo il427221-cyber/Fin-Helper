@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.screenshot
+package ru.myproject.finhelper.features.screenshot
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text

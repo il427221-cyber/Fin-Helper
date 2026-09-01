@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.appBar
+package ru.myproject.finhelper.features.appBar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -42,13 +42,13 @@ fun TopAppBarBack(
         actions = {
             if(currentRoute == "VATCalc_UI"
                 || currentRoute == "PersonalTaxCalc_UI"
-                || currentRoute == "PropertyTaxCalc") {
+                || currentRoute == "PropertyTaxCalc"
+                || currentRoute == "ROI_Render") {
                 IconButton(onClick = onCaptureClick) {
                     Icon(
                         Icons.Filled.Screenshot,
                         contentDescription = "Take a screenshot"
                     )
-
                 }
             }
         }
