@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.numericfield
+package ru.myproject.finhelper.features.numericfield
 
 import android.R.attr.textStyle
 import androidx.compose.foundation.border

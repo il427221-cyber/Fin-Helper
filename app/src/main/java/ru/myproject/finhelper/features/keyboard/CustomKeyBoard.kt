@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.keyboard
+package ru.myproject.finhelper.features.keyboard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,8 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -104,8 +102,7 @@ fun CustomKeyBoard(
 
             Button({ onClearClick() },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.my_light_red)
-                )
+                    containerColor = colorResource(id = R.color.my_light_red))
                 ) {
                 Icon(Icons.Outlined.Delete, contentDescription = "Clear all")
             }

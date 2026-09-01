@@ -1,6 +1,5 @@
 package ru.myproject.finhelper.ui.taxes.property_tax
 
-import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,9 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
-import ru.myproject.finhelper.ui.keyboard.CustomKeyBoard
-import ru.myproject.finhelper.ui.numericfield.NumericInputField
-import ru.myproject.finhelper.ui.numericfield.NumericOutputField
+import ru.myproject.finhelper.features.keyboard.CustomKeyBoard
+import ru.myproject.finhelper.features.numericfield.NumericInputField
+import ru.myproject.finhelper.features.numericfield.NumericOutputField
 
 enum class ActiveField {
     PROPERTY, AREA, TAX, SHARE, PERIOD, NONE

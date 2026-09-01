@@ -12,17 +12,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.myproject.finhelper.repository.FinRepositoryImpl
+import ru.myproject.finhelper.repository.ProfitRepositoryImpl
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 import ru.myproject.finhelper.viewmodel.FinViewModel
 import ru.myproject.finhelper.viewmodel.FinViewModelFactory
+import ru.myproject.finhelper.viewmodel.ProfitViewModel
 
 @Composable
 fun ShowPersonalTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Modifier,
-                 finViewModel: FinViewModel = viewModel(factory = FinViewModelFactory(FinRepositoryImpl()))
-) {
+                    finViewModelFactory: ViewModelProvider.Factory)
+{
     val context = LocalContext.current
+
+    val finViewModel: FinViewModel = viewModel(factory = finViewModelFactory)
 
     LaunchedEffect(finViewModel) {
         finViewModel.uiMessages.collect { message ->
@@ -231,10 +236,10 @@ fun ShowPersonalTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
     )
 }
 
-@Preview (showBackground = true)
-@Composable
-fun ShowPersonalTaxPreview() {
-    FinHelperTheme {
-        ShowPersonalTax(onShowBottomBar = { })
-    }
-}
+//@Preview (showBackground = true)
+//@Composable
+//fun ShowPersonalTaxPreview() {
+//    FinHelperTheme {
+//        ShowPersonalTax(onShowBottomBar = { })
+//    }
+//}

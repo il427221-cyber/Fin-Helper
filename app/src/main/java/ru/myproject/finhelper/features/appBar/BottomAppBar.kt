@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.appBar
+package ru.myproject.finhelper.features.appBar
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,8 +31,13 @@ fun BottomAppBarHome(modifier: Modifier = Modifier,navController: NavController)
                     TextButton(onClick = { navController.navigate("TaxesUI") }) {
                         Text(stringResource(R.string.taxes))
                     }
-                    TextButton(onClick = {}) {
-                        Text("Прибыль")
+                    TextButton(onClick = { navController.navigate("ProfitUI")}) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text("Доходность")
+                            Text("организаций")
+                        }
                     }
                     TextButton(onClick = {}) {
                         Text("Проценты")
@@ -46,7 +51,6 @@ fun BottomAppBarHome(modifier: Modifier = Modifier,navController: NavController)
                         }
                     }
                 }
-
             }
         )
 }
