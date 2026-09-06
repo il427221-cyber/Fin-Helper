@@ -13,105 +13,80 @@ import ru.myproject.finhelper.dto.profit_ui_state.ActiveField
 import ru.myproject.finhelper.dto.profit_ui_state.ProfitUiState
 import ru.myproject.finhelper.repository.ProfitRepository
 
-open class ProfitViewModel(
-    private val profitRepository: ProfitRepository) : ViewModel() {
+open class ProfitViewModel(private val profitRepository: ProfitRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfitUiState())
     open val uiState: StateFlow<ProfitUiState> = _uiState.asStateFlow()
 
-    private val _UIMessages = MutableSharedFlow<String>()
-    val uiMessages: SharedFlow<String> = _UIMessages
+    private val _uiMessages = MutableSharedFlow<String>()
+    val uiMessages: SharedFlow<String> = _uiMessages
+
+    private val emptyState = ProfitUiState()
 
     // Методы для обновления состояния
-    open fun updateIncomeInput(newValue: String) {
+    fun updateInput(newValue: String) {
         _uiState.update { currentState ->
-            currentState.copy(incomeInput = newValue)
+            currentState.copy(incomeInput = newValue, expensesInput = newValue)
         }
     }
 
-    open fun updateExpensesInput(newValue: String) {
-        _uiState.update { currentState ->
-            currentState.copy(expensesInput = newValue)
-        }
-    }
-
-    open fun setActiveField(field: ActiveField) {
+    fun setActiveField(field: ActiveField) {
         _uiState.update { currentState ->
             currentState.copy(activeField = field)
         }
     }
-    open fun appendNumberToActiveField(number: String) {
+    fun appendNumberToActiveField(number: String) {
         _uiState.update { currentState ->
             when (currentState.activeField) {
-                ActiveField.INCOME -> {
-                    val currentIncome = currentState.incomeInput
-                    currentState.copy(incomeInput = currentIncome + number)
-                }
-                ActiveField.EXPENSES -> {
-                    val currentExpenses = currentState.expensesInput
-                    currentState.copy(expensesInput = currentExpenses + number)
-                }
-                ActiveField.NONE -> currentState // Ничего не делаем, если поле не активно
+                ActiveField.INCOME -> currentState.copy(
+                    incomeInput = appendNumberIfMissing(currentState.incomeInput + number))
+
+                ActiveField.EXPENSES -> currentState.copy(
+                    expensesInput = appendNumberIfMissing(currentState.expensesInput + number))
+
+                else -> currentState // Ничего не делаем, если поле не активно
             }
         }
     }
-    open fun appendCommaToActiveField() {
+    fun appendCommaToActiveField() {
         _uiState.update { currentState ->
             when (currentState.activeField) {
-                ActiveField.INCOME -> {
-                    val currentIncome = currentState.incomeInput
-                    if (!currentIncome.contains(".")) { // Добавляем запятую только если её нет
-                        currentState.copy(incomeInput = "$currentIncome.")
-                    } else currentState
-                }
-                ActiveField.EXPENSES -> {
-                    val currentExpenses = currentState.expensesInput
-                    if (!currentExpenses.contains(".")) {
-                        currentState.copy(expensesInput = "$currentExpenses.")
-                    } else currentState
-                }
-                ActiveField.NONE -> currentState
+                ActiveField.INCOME -> currentState.copy(
+                    incomeInput = appendCommaIfMissing(currentState.incomeInput))
+
+                ActiveField.EXPENSES -> currentState.copy(
+                    expensesInput = appendCommaIfMissing(currentState.expensesInput))
+
+                else -> currentState
             }
         }
     }
-    open fun deleteLastCharFromActiveField() {
+    fun deleteLastCharFromActiveField() {
         _uiState.update { currentState ->
             when (currentState.activeField) {
-                ActiveField.INCOME -> {
-                    val currentIncome = currentState.incomeInput
-                    if (currentIncome.isNotEmpty()) {
-                        currentState.copy(incomeInput = currentIncome.dropLast(1))
-                    } else currentState
-                }
-                ActiveField.EXPENSES -> {
-                    val currentExpenses = currentState.expensesInput
-                    if (currentExpenses.isNotEmpty()) {
-                        currentState.copy(expensesInput = currentExpenses.dropLast(1))
-                    } else currentState
-                }
-                ActiveField.NONE -> currentState
+                ActiveField.INCOME -> currentState.copy(
+                    incomeInput = deleteOneChar(currentState.incomeInput.dropLast(1)))
+
+                ActiveField.EXPENSES -> currentState.copy(
+                    expensesInput = deleteOneChar(currentState.expensesInput.dropLast(1)))
+
+                else -> currentState
             }
         }
     }
-    open fun clearInputFields() {
-        _uiState.update { currentState -> currentState.copy(incomeInput = "", expensesInput = "") }
-    }
-   open fun calculateROI() {
+    fun clearAllFields() { _uiState.value = emptyState }
+    fun calculateROI() {
        viewModelScope.launch {
            _uiState.update { currentState ->
                val income = currentState.incomeInput.toDoubleOrNull() ?: 0.0
                val expenses = currentState.expensesInput.toDoubleOrNull() ?: 0.0
                val roi = profitRepository.calculateROI(expenses, income)
                when {
-                   (roi > 0.0) -> _UIMessages.emit("Инвестиции приносят прибыль")
-                   (roi == 0.0) -> _UIMessages.emit("Инвестиции окупились, но прибыли не принесли")
-                   (roi < 0.0) -> _UIMessages.emit("Инвестиции убыточны")
-
+                   (roi > 0.0) -> _uiMessages.emit("Инвестиции приносят прибыль")
+                   (roi == 0.0) -> _uiMessages.emit("Инвестиции окупились, но прибыли не принесли")
+                   (roi < 0.0) -> _uiMessages.emit("Инвестиции убыточны")
                }
                currentState.copy(roiIndex = roi)
            }
        }
-    }
-    fun clearOutputFields() {
-        _uiState.value = ProfitUiState(roiIndex = 0.0) // Сбрасываем к начальному состоянию
     }
 }

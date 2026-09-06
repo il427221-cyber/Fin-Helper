@@ -18,12 +18,10 @@ import androidx.compose.ui.unit.dp
 import ru.myproject.finhelper.features.keyboard.CustomKeyBoard
 import ru.myproject.finhelper.features.numericfield.NumericInputField
 import ru.myproject.finhelper.features.numericfield.NumericOutputField
+import ru.myproject.finhelper.dto.tax_ui_state.ActiveField
 
-enum class ActiveField {
-    SUM, DEDUCTION, TAX, NONE
-}
 @Composable
-fun CalculatorPersonalTax(
+fun PersonalTax_Render(
     currentTaxAmount: Double,
     currentTotalAmount: Double,
     sumInputValue: String, // Текущее значение поля "Сумма"

@@ -13,9 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.testing.TestNavHostController
-import ru.myproject.finhelper.R
 
 @Composable
 fun ProfitChoice(onShowBottomBar: (Boolean) -> Unit,

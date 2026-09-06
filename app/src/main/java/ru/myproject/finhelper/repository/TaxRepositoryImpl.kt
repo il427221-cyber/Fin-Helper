@@ -1,6 +1,6 @@
 package ru.myproject.finhelper.repository
 
-class FinRepositoryImpl: FinRepository {
+class TaxRepositoryImpl: TaxRepository {
     override fun calculateVAT(sum: Double, tax: Double): Double {
         val taxValue = tax / 100
         return sum * taxValue
@@ -37,5 +37,4 @@ class FinRepositoryImpl: FinRepository {
        val totalTax = taxableAreaValue * tax / 100.0 * share / 100.0 * period / 12.0
        return totalTax
     }
-
 }
