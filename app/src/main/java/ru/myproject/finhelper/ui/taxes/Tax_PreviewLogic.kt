@@ -1,0 +1,36 @@
+package ru.myproject.finhelper.ui.taxes
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import ru.myproject.finhelper.dto.tax_ui_state.TaxUIState
+import ru.myproject.finhelper.repository.TaxRepository
+import ru.myproject.finhelper.viewmodel.TaxViewModel
+
+private class PreviewMockTaxRepository: TaxRepository {
+    override fun calculateVAT(sum: Double, tax: Double): Double { return 123.45 }
+    override fun calculateTotalSumWithVAT(sum: Double, tax: Double): Double { return 123.45 }
+    override fun extractVAT(sum: Double, tax: Double): Double { return 123.45 }
+    override fun extractSumWithoutVAT(sum: Double, tax: Double): Double { return 123.45 }
+    override fun calculatePersonalTax(sum: Double, deduction: Double, tax: Double): Double { return 123.45 }
+    override fun calculateTotalSum_Without_PersonalTax(sum: Double, deduction: Double, tax: Double): Double { return 123.45 }
+    override fun calculatePropertyTax(
+        propertyValue: Double,
+        area: Double,
+        tax: Double,
+        share: Double,
+        period: Double
+    ): Double {
+       return 123.45
+    }
+}
+private class PreviewMockTaxViewModel(initialState: TaxUIState): TaxViewModel(
+    PreviewMockTaxRepository())
+class PreviewTaxViewModelFactory(private val initialState: TaxUIState): ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(TaxViewModel::class.java)) {
+            return PreviewMockTaxViewModel(initialState) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}

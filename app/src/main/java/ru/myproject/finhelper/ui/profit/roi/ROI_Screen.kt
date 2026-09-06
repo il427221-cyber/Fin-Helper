@@ -9,10 +9,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.myproject.finhelper.viewmodel.ProfitViewModel
 import ru.myproject.finhelper.dto.profit_ui_state.ActiveField
+import ru.myproject.finhelper.dto.profit_ui_state.ProfitUiState
+import ru.myproject.finhelper.ui.profit.PreviewProfitViewModelFactory
+import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
 @Composable
 fun ShowROI(
@@ -21,7 +25,6 @@ fun ShowROI(
     profitViewModelFactory: ViewModelProvider.Factory)
 {
     val profitViewModel: ProfitViewModel = viewModel(factory = profitViewModelFactory)
-
     val context = LocalContext.current
 
     LaunchedEffect(profitViewModel) {
@@ -34,7 +37,6 @@ fun ShowROI(
     }
 
     val uiState by profitViewModel.uiState.collectAsState()
-
     val incomeFocusRequester = remember { FocusRequester() }
     val expensesFocusRequester = remember { FocusRequester() }
 
@@ -42,8 +44,8 @@ fun ShowROI(
         when (uiState.activeField) {
             ActiveField.INCOME -> incomeFocusRequester.requestFocus()
             ActiveField.EXPENSES -> expensesFocusRequester.requestFocus()
-            ActiveField.NONE -> {
-                // Очистка фокуса, если нужно
+            else -> {
+                // Очистка фокуса
                 incomeFocusRequester.freeFocus()
                 expensesFocusRequester.freeFocus()
             }
@@ -58,9 +60,8 @@ fun ShowROI(
     val handleDeleteClick: () -> Unit =  { profitViewModel.deleteLastCharFromActiveField() }
 
     val handleClearClick: () -> Unit =  {
-        profitViewModel.clearInputFields()
-        profitViewModel.clearOutputFields()
-        uiState.activeField = ActiveField.INCOME
+        profitViewModel.clearAllFields()
+        incomeFocusRequester.requestFocus()
     }
 
     val handleMoveCursorClick: () -> Unit = remember {
@@ -68,7 +69,7 @@ fun ShowROI(
             when(uiState.activeField) {
                 ActiveField.INCOME -> { expensesFocusRequester.requestFocus() }
                 ActiveField.EXPENSES -> { incomeFocusRequester.requestFocus() }
-                ActiveField.NONE -> { incomeFocusRequester.requestFocus() }
+                else -> { incomeFocusRequester.requestFocus() }
             }
         }
     }
@@ -78,12 +79,12 @@ fun ShowROI(
     }
 
     val onIncomeInputChanged: (String) -> Unit = { newValue ->
-        profitViewModel.updateIncomeInput(newValue)
+        profitViewModel.updateInput(newValue)
         profitViewModel.setActiveField(ActiveField.INCOME)
     }
 
     val onExpensesInputChanged: (String) -> Unit = { newValue ->
-        profitViewModel.updateExpensesInput(newValue)
+        profitViewModel.updateInput(newValue)
         profitViewModel.setActiveField(ActiveField.EXPENSES)
     }
 
@@ -94,7 +95,7 @@ fun ShowROI(
             when (newActiveField) {
                 ActiveField.INCOME -> incomeFocusRequester.requestFocus()
                 ActiveField.EXPENSES -> expensesFocusRequester.requestFocus()
-                ActiveField.NONE -> {  }
+                else -> {  }
             }
         }
     }
@@ -118,3 +119,18 @@ fun ShowROI(
     )
 }
 
+@Preview(showBackground = true)
+@Composable
+fun ShowROIPreview() {
+    // Определяем состояние, которое хотим видеть в этом конкретном Preview
+    val initialState = ProfitUiState()
+    val mockFactory = PreviewProfitViewModelFactory(initialState)
+
+    FinHelperTheme {
+        ShowROI(
+        onShowBottomBar = {},
+        modifier = Modifier,
+        profitViewModelFactory = mockFactory
+    )
+}
+}

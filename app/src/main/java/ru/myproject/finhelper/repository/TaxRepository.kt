@@ -1,6 +1,6 @@
 package ru.myproject.finhelper.repository
 
-interface FinRepository {
+interface TaxRepository {
     fun calculateVAT(sum: Double,tax: Double): Double
     fun calculateTotalSumWithVAT(sum: Double,tax: Double): Double
     fun extractVAT(sum: Double,tax: Double): Double
