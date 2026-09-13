@@ -1,5 +1,6 @@
 package ru.myproject.finhelper.ui.taxes.income_tax
 
+import android.app.Application
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.myproject.finhelper.dto.tax_ui_state.ActiveField
 import ru.myproject.finhelper.dto.tax_ui_state.TaxUIState
+import ru.myproject.finhelper.ui.MockApplicationForPreview
 import ru.myproject.finhelper.ui.taxes.PreviewTaxViewModelFactory
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 import ru.myproject.finhelper.viewmodel.TaxViewModel
@@ -151,7 +153,9 @@ fun ShowPersonalTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
 @Composable
 fun PersonalTaxPreview() {
     val initialState = TaxUIState()
-    val mockFactory = PreviewTaxViewModelFactory(initialState)
+    val context = LocalContext.current
+    val application = MockApplicationForPreview(context)
+    val mockFactory = PreviewTaxViewModelFactory(application,initialState)
 
     FinHelperTheme {
         ShowPersonalTax(

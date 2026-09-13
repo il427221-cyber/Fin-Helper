@@ -13,7 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.testing.TestNavHostController
+import ru.myproject.finhelper.R
 
 @Composable
 fun ProfitChoice(onShowBottomBar: (Boolean) -> Unit,
@@ -33,13 +35,18 @@ fun ProfitChoice(onShowBottomBar: (Boolean) -> Unit,
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Индекс ROI")
-                Text("(Окупаемость инвестиций)")
+                Text(stringResource(R.string.ROI_index))
+                Text(stringResource(R.string.Return_on_investment))
             }
 
         }
-        TextButton(onClick = {}) {
-            Text("")
+        TextButton(onClick = {navController.navigate("ROS_Render")}) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(stringResource(R.string.ROS_index))
+                Text(stringResource(R.string.Return_on_sales))
+            }
         }
         TextButton(onClick = {}) {
             Text("")

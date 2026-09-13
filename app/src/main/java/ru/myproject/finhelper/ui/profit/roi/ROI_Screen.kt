@@ -1,5 +1,6 @@
 package ru.myproject.finhelper.ui.profit.roi
 
+import android.app.Application
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.myproject.finhelper.viewmodel.ProfitViewModel
 import ru.myproject.finhelper.dto.profit_ui_state.ActiveField
 import ru.myproject.finhelper.dto.profit_ui_state.ProfitUiState
+import ru.myproject.finhelper.ui.MockApplicationForPreview
 import ru.myproject.finhelper.ui.profit.PreviewProfitViewModelFactory
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
@@ -124,7 +126,9 @@ fun ShowROI(
 fun ShowROIPreview() {
     // Определяем состояние, которое хотим видеть в этом конкретном Preview
     val initialState = ProfitUiState()
-    val mockFactory = PreviewProfitViewModelFactory(initialState)
+    val context = LocalContext.current
+    val application = MockApplicationForPreview(context)
+    val mockFactory = PreviewProfitViewModelFactory(application,initialState)
 
     FinHelperTheme {
         ShowROI(

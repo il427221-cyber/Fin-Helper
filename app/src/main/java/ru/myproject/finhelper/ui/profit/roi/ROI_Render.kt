@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.myproject.finhelper.R
 import ru.myproject.finhelper.features.keyboard.CustomKeyBoard
 import ru.myproject.finhelper.features.numericfield.NumericInputField
 import ru.myproject.finhelper.features.numericfield.NumericOutputField
@@ -53,10 +54,9 @@ fun ROIRendering(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                //Spacer(modifier = Modifier.height(64.dp))
 
                 NumericInputField(
-                    text = "Доходы\nруб.:",
+                    text = stringResource(R.string.Income),
                     number = incomeInputValue,
                     onValueChange = onIncomeInputChanged,
                     onFocusGained = { onActiveFieldChanged(ActiveField.INCOME) },
@@ -65,33 +65,12 @@ fun ROIRendering(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 NumericInputField(
-                    text = "Расходы\nруб.:",
+                    text = stringResource(R.string.Expenses),
                     number = expensesInputValue,
                     onValueChange = onExpensesInputChanged,
                     onFocusGained = { onActiveFieldChanged(ActiveField.EXPENSES) },
                     focusRequester = expensesFocusRequester
                 )
-
-                //Spacer(modifier = Modifier.height(16.dp))
-
-//                NumericOutputField(
-//                    text = "ROI:",
-//                    value = "%.0f".format(currentROIAmount),
-//                    textHint = "%",
-//                )
-
-//                Spacer(modifier = Modifier.height(36.dp))
-//
-//                Button(
-//                    onClick = {
-//                        val income = incomeInputValue.toDoubleOrNull() ?: 0.0
-//                        val expenses = expensesInputValue.toDoubleOrNull() ?: 0.0
-//                        onCalculateROIClick(income, expenses)
-//                    },
-//                    modifier = Modifier.fillMaxWidth()
-//                ) {
-//                    Text("Рассчитать ROI")
-//                }
             }
         }
 
@@ -104,9 +83,9 @@ fun ROIRendering(
         ) {
 
             NumericOutputField(
-                text = "ROI:",
+                text = stringResource(R.string.ROI_index),
                 value = "%.0f".format(currentROIAmount),
-                textHint = "%",
+                textHint = stringResource(R.string.percent),
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -119,13 +98,10 @@ fun ROIRendering(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Рассчитать ROI")
+                Text(stringResource(R.string.calculate_roi))
             }
 
         }
-
-
-
 
         Box(
             modifier = Modifier

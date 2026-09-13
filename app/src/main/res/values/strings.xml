@@ -8,4 +8,67 @@
     <string name="percentImage">PercentImage</string>
     <string name="return_back">Return back</string>
     <string name="personal_property_tax">Personal property tax</string>
+    <string name="_ros" >Each rouble brings %1$s kopecks of profit</string>
+    <string name="Profitability">Profitability</string>
+    <string name="of_organizations">of organizations</string>
+    <string name="Percents">Percents</string>
+    <string name="take_a_screenshot" translatable="false">Take a screenshot</string>
+    <string name="delete" translatable="false">Delete</string>
+    <string name="clear_all" translatable="false">Clear all</string>
+    <string name="move_cursor_up" translatable="false">Move Cursor Up</string>
+    <string name="move_cursor_down" translatable="false">Move Cursor Down</string>
+    <string name="one" translatable="false">1</string>
+    <string name="two" translatable="false">2</string>
+    <string name="three" translatable="false">3</string>
+    <string name="four" translatable="false">4</string>
+    <string name="five" translatable="false">5</string>
+    <string name="six" translatable="false">6</string>
+    <string name="seven" translatable="false">7</string>
+    <string name="eight" translatable="false">8</string>
+    <string name="nine" translatable="false">9</string>
+    <string name="zero" translatable="false">0</string>
+    <string name="double_zero" translatable="false">00</string>
+    <string name="comma" translatable="false">,</string>
+    <string name="Share_a_screenshot">Share_a_screenshot</string>
+    <string name="Failed_to_share_a_screenshot">Failed_to_share_a_screenshot</string>
+    <string name="Screenshot_saved">Screenshot saved!</string>
+    <string name="Screenshot_is_ready">Screenshot is ready</string>
+    <string name="Actions_with_a_screenshot">What would you like to do with a screenshot?</string>
+    <string name="Save_to_gallery">Save to gallery</string>
+    <string name="Share">Share</string>
+    <string name="ROI_index">ROI index:</string>
+    <string name="Return_on_investment">(Return on investment)</string>
+    <string name="ROS_index">ROS index:</string>
+    <string name="Return_on_sales">(Return on sales)</string>
+    <string name="Income">Income\n(rub.):</string>
+    <string name="Expenses">Expenses\n(rub.):</string>
+    <string name="calculate_roi">Calculate ROI</string>
+    <string name="revenue_rub">Revenue\n(rub.):</string>
+    <string name="profit_rub">Profit\n(rub.):</string>
+    <string name="calculate_ros">Calculate ROS</string>
+    <string name="sum_rub">Sum\n(rub.):</string>
+    <string name="deduction_rub">Deduction\n(rub.):</string>
+    <string name="rate">Rate\n(%):</string>
+    <string name="sum_after_deduction">Sum\nafter deduction:</string>
+    <string name="calculate">Calculate</string>
+    <string name="tax">Tax:</string>
+    <string name="cost_of_housing">Cost\nof housing(rub.):</string>
+    <string name="area_sq_m">Area\n(sq.m.):</string>
+    <string name="share">Share\n(%):</string>
+    <string name="holding_period">Holding\nperiod (months per year):</string>
+    <string name="Vat">VAT:</string>
+    <string name="charge_vat">Charge VAT</string>
+    <string name="extract_vat">Extract VAT</string>
+    <string name="percent" translatable="false">%</string>
+    <string name="rub">rub.</string>
+    <string name="investments_are_profitable">Investments are profitable</string>
+    <string name="investments_are_zero_profitable">Investments are zero profitable</string>
+    <string name="unprofitable_investments">Unprofitable investments</string>
+    <string name="enter_a_value_greater_than_zero">Enter a value greater than zero</string>
+    <string name="profit_will_always_be_less_than_revenue">Profit will always be less than revenue</string>
+    <string name="total_sum">Total\nsum:</string>
+    <string name="deduction_condition">Personal tax will be zero if deduction is more or equal to sum</string>
+    <string name="area_condition">Tax will be zero if area is less or equal t0 20 sq.m.</string>
+    <string name="filling_condition">Fill all the fields: enter values greater than zero</string>
+    <string name="number_condition">Enter a number from 1 to 12</string>
 </resources>

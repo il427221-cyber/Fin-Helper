@@ -1,6 +1,8 @@
 package ru.myproject.finhelper.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,11 +11,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.myproject.finhelper.R
 import ru.myproject.finhelper.dto.profit_ui_state.ActiveField
 import ru.myproject.finhelper.dto.profit_ui_state.ProfitUiState
 import ru.myproject.finhelper.repository.ProfitRepository
 
-open class ProfitViewModel(private val profitRepository: ProfitRepository) : ViewModel() {
+    open class ProfitViewModel(
+        application: Application,
+        private val profitRepository: ProfitRepository) : AndroidViewModel(application) {
+
     private val _uiState = MutableStateFlow(ProfitUiState())
     open val uiState: StateFlow<ProfitUiState> = _uiState.asStateFlow()
 
@@ -43,6 +49,9 @@ open class ProfitViewModel(private val profitRepository: ProfitRepository) : Vie
                 ActiveField.EXPENSES -> currentState.copy(
                     expensesInput = appendNumberIfMissing(currentState.expensesInput + number))
 
+                ActiveField.PROFIT -> currentState.copy(
+                    profitInput = appendNumberIfMissing(currentState.profitInput + number))
+
                 else -> currentState // Ничего не делаем, если поле не активно
             }
         }
@@ -55,6 +64,9 @@ open class ProfitViewModel(private val profitRepository: ProfitRepository) : Vie
 
                 ActiveField.EXPENSES -> currentState.copy(
                     expensesInput = appendCommaIfMissing(currentState.expensesInput))
+
+                ActiveField.PROFIT -> currentState.copy(
+                    profitInput = appendCommaIfMissing(currentState.profitInput))
 
                 else -> currentState
             }
@@ -69,6 +81,9 @@ open class ProfitViewModel(private val profitRepository: ProfitRepository) : Vie
                 ActiveField.EXPENSES -> currentState.copy(
                     expensesInput = deleteOneChar(currentState.expensesInput.dropLast(1)))
 
+                ActiveField.PROFIT -> currentState.copy(
+                    profitInput = deleteOneChar(currentState.profitInput.dropLast(1)))
+
                 else -> currentState
             }
         }
@@ -81,12 +96,40 @@ open class ProfitViewModel(private val profitRepository: ProfitRepository) : Vie
                val expenses = currentState.expensesInput.toDoubleOrNull() ?: 0.0
                val roi = profitRepository.calculateROI(expenses, income)
                when {
-                   (roi > 0.0) -> _uiMessages.emit("Инвестиции приносят прибыль")
-                   (roi == 0.0) -> _uiMessages.emit("Инвестиции окупились, но прибыли не принесли")
-                   (roi < 0.0) -> _uiMessages.emit("Инвестиции убыточны")
+                   (roi > 0.0) ->
+                       _uiMessages.emit(application.getString(R.string.investments_are_profitable))
+                   (roi == 0.0) ->
+                       _uiMessages.emit(application.getString(R.string.investments_are_zero_profitable))
+                   (roi < 0.0) ->
+                       _uiMessages.emit(application.getString(R.string.unprofitable_investments))
                }
                currentState.copy(roiIndex = roi)
            }
        }
+    }
+
+    fun calculateROS() {
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                val income = currentState.incomeInput.toDoubleOrNull() ?: 0.0
+                val profit = currentState.profitInput.toDoubleOrNull() ?: 0.0
+
+                if (income == 0.0 || profit == 0.0) {
+                    _uiMessages.emit(application.getString(R.string.enter_a_value_greater_than_zero))
+                    return@update currentState
+                }
+
+                if(profit >= income) {
+                    _uiMessages.emit(application.getString(R.string.profit_will_always_be_less_than_revenue))
+                    return@update currentState
+                }
+
+                val ros = profitRepository.calculateROS(income, profit)
+                val result = "%.0f".format(ros)
+                _uiMessages.emit(application.getString(R.string._ros, result))
+                currentState.copy(rosResult = ros)
+
+            }
+        }
     }
 }

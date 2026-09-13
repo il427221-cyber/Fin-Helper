@@ -14,14 +14,12 @@ import ru.myproject.finhelper.ui.theme.FinHelperTheme
 import ru.myproject.finhelper.viewmodel.FinViewModelFactory
 
 class MainActivity : ComponentActivity() {
-
     // Инициализируем репозитории на уровне Activity
     private val taxRepository: TaxRepository = TaxRepositoryImpl()
     private val profitRepository: ProfitRepository = ProfitRepositoryImpl()
-
     // Инициализируем фабрику на уровне Activity
     private val appViewModelFactory: ViewModelProvider.Factory by lazy {
-        FinViewModelFactory(taxRepository, profitRepository)
+        FinViewModelFactory(application, taxRepository, profitRepository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

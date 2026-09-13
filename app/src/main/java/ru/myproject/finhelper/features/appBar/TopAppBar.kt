@@ -43,11 +43,13 @@ fun TopAppBarBack(
             if(currentRoute == "VATCalc_UI"
                 || currentRoute == "PersonalTaxCalc_UI"
                 || currentRoute == "PropertyTaxCalc"
-                || currentRoute == "ROI_Render") {
+                || currentRoute == "ROI_Render"
+                || currentRoute == "ROS_Render"
+                ) {
                 IconButton(onClick = onCaptureClick) {
                     Icon(
                         Icons.Filled.Screenshot,
-                        contentDescription = "Take a screenshot"
+                        contentDescription = stringResource(R.string.take_a_screenshot)
                     )
                 }
             }
