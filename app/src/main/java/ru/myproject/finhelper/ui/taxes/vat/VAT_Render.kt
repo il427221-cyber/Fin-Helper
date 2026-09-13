@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.myproject.finhelper.R
 import ru.myproject.finhelper.features.keyboard.CustomKeyBoard
 import ru.myproject.finhelper.features.numericfield.NumericInputField
 import ru.myproject.finhelper.features.numericfield.NumericOutputField
@@ -56,7 +58,7 @@ fun VATRendering(
             ) {
 
                 NumericInputField(
-                    text = "Сумма\nруб.:",
+                    text = stringResource(R.string.sum_rub),
                     number = sumInputValue,
                     onValueChange = onSumInputChanged,
                     onFocusGained = { onActiveFieldChanged(ActiveField.SUM) },
@@ -65,7 +67,7 @@ fun VATRendering(
                     Spacer(modifier = Modifier.height(16.dp))
 
                 NumericInputField(
-                    text = "Ставка\n%:",
+                    text = stringResource(R.string.rate),
                     number = taxInputValue,
                     onValueChange = onTaxInputChanged,
                     onFocusGained = { onActiveFieldChanged(ActiveField.TAX) },
@@ -75,17 +77,17 @@ fun VATRendering(
                     Spacer(modifier = Modifier.height(16.dp))
 
                 NumericOutputField(
-                    text = "НДС:",
+                    text = stringResource(R.string.Vat),
                     value = "%.2f".format(currentVatAmount),
-                    textHint = "руб.",
+                    textHint = stringResource(R.string.rub),
                 )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
                 NumericOutputField(
-                    text = "Итоговая\n сумма:",
+                    text = stringResource(R.string.total_sum),
                     value = "%.2f".format(currentTotalAmount),
-                    textHint = "руб.",
+                    textHint = stringResource(R.string.rub),
 
                     )
 
@@ -97,7 +99,7 @@ fun VATRendering(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Начислить НДС")
+                        Text(stringResource(R.string.charge_vat))
                     }
 
                     Button(
@@ -108,7 +110,7 @@ fun VATRendering(
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Выделить НДС")
+                    Text(stringResource(R.string.extract_vat))
                 }
 
                 }

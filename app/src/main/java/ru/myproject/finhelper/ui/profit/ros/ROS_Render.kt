@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.profit.roi
+package ru.myproject.finhelper.ui.profit.ros
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,15 +23,15 @@ import ru.myproject.finhelper.features.numericfield.NumericOutputField
 import ru.myproject.finhelper.dto.profit_ui_state.ActiveField
 
 @Composable
-fun ROIRendering(
-    currentROIAmount: Double,
-    incomeInputValue: String, // Текущее значение поля "Сумма"
-    expensesInputValue: String, // Текущее значение поля "Ставка"
+fun ROSRendering(
+    currentROSAmount: Double,
+    incomeInputValue: String,
+    profitInputValue: String,
     activeField: ActiveField,
-    onIncomeInputChanged: (String) -> Unit, // Колбэк для изменения sumInputValue
-    onExpensesInputChanged: (String) -> Unit, // Колбэк для изменения taxInputValue
-    onActiveFieldChanged: (ActiveField) -> Unit, // Колбэк для оповещения о смене активного поля
-    onCalculateROIClick: (Double, Double) -> Unit,
+    onIncomeInputChanged: (String) -> Unit,
+    onProfitInputChanged: (String) -> Unit,
+    onActiveFieldChanged: (ActiveField) -> Unit,
+    onCalculateROSClick: (Double, Double) -> Unit,
     onNumberClick: (String) -> Unit,
     onCommaClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -39,9 +39,9 @@ fun ROIRendering(
     onMoveCursorClick: () -> Unit,
     modifier: Modifier = Modifier,
     incomeFocusRequester: FocusRequester,
-    expensesFocusRequester: FocusRequester
+    profitFocusRequester: FocusRequester
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {// включает 2 Box
+    Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -56,7 +56,7 @@ fun ROIRendering(
             ) {
 
                 NumericInputField(
-                    text = stringResource(R.string.Income),
+                    text = stringResource(R.string.revenue_rub),
                     number = incomeInputValue,
                     onValueChange = onIncomeInputChanged,
                     onFocusGained = { onActiveFieldChanged(ActiveField.INCOME) },
@@ -65,11 +65,11 @@ fun ROIRendering(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 NumericInputField(
-                    text = stringResource(R.string.Expenses),
-                    number = expensesInputValue,
-                    onValueChange = onExpensesInputChanged,
-                    onFocusGained = { onActiveFieldChanged(ActiveField.EXPENSES) },
-                    focusRequester = expensesFocusRequester
+                    text = stringResource(R.string.profit_rub),
+                    number = profitInputValue,
+                    onValueChange = onProfitInputChanged,
+                    onFocusGained = { onActiveFieldChanged(ActiveField.PROFIT) },
+                    focusRequester = profitFocusRequester
                 )
             }
         }
@@ -83,8 +83,8 @@ fun ROIRendering(
         ) {
 
             NumericOutputField(
-                text = stringResource(R.string.ROI_index),
-                value = "%.0f".format(currentROIAmount),
+                text = stringResource(R.string.ROS_index),
+                value = "%.0f".format(currentROSAmount),
                 textHint = stringResource(R.string.percent),
             )
 
@@ -93,14 +93,13 @@ fun ROIRendering(
             Button(
                 onClick = {
                     val income = incomeInputValue.toDoubleOrNull() ?: 0.0
-                    val expenses = expensesInputValue.toDoubleOrNull() ?: 0.0
-                    onCalculateROIClick(income, expenses)
+                    val profit = profitInputValue.toDoubleOrNull() ?: 0.0
+                    onCalculateROSClick(income, profit)
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.calculate_roi))
+                Text(stringResource(R.string.calculate_ros))
             }
-
         }
 
         Box(

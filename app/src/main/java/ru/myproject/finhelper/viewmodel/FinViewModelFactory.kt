@@ -1,5 +1,6 @@
 package ru.myproject.finhelper.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.myproject.finhelper.repository.TaxRepository
@@ -10,17 +11,18 @@ import ru.myproject.finhelper.repository.ProfitRepository
  Также это нужно, т.к. репозиторий является аргументом ViewModel
  */
 class FinViewModelFactory(
+    private val application: Application,
     private val taxRepository: TaxRepository,
     private val profitRepository: ProfitRepository
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(TaxViewModel:: class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return TaxViewModel(taxRepository) as T
+            return TaxViewModel(application,taxRepository) as T
         }
         if(modelClass.isAssignableFrom(ProfitViewModel:: class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ProfitViewModel(profitRepository) as T
+            return ProfitViewModel(application,profitRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class : $modelClass")
     }

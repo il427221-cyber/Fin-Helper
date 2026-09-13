@@ -1,5 +1,6 @@
 package ru.myproject.finhelper.ui.taxes
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.myproject.finhelper.dto.tax_ui_state.TaxUIState
@@ -23,13 +24,17 @@ private class PreviewMockTaxRepository: TaxRepository {
        return 123.45
     }
 }
-private class PreviewMockTaxViewModel(initialState: TaxUIState): TaxViewModel(
-    PreviewMockTaxRepository())
-class PreviewTaxViewModelFactory(private val initialState: TaxUIState): ViewModelProvider.Factory {
+private class PreviewMockTaxViewModel(
+    application: Application,
+    initialState: TaxUIState): TaxViewModel(
+    application,PreviewMockTaxRepository())
+class PreviewTaxViewModelFactory(
+    private val application: Application,
+    private val initialState: TaxUIState): ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TaxViewModel::class.java)) {
-            return PreviewMockTaxViewModel(initialState) as T
+            return PreviewMockTaxViewModel(application,initialState) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

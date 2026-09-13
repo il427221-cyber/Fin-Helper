@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import dev.shreyaspatil.capturable.capturable
 import androidx.compose.ui.graphics.asAndroidBitmap
+import ru.myproject.finhelper.R
 
 @SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalComposeUiApi::class)
@@ -75,7 +76,8 @@ fun ScreenShot(
                     // Вызываем функцию сохранения
                     saveImageToGallery(context, bitmap.asAndroidBitmap(),
                         "VAT_Screenshot_${System.currentTimeMillis()}")
-                    Toast.makeText(context, "Скриншот сохранён!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        R.string.Screenshot_saved, Toast.LENGTH_SHORT).show()
                 }
                 showActionDialog = false
                 capturedBitmap = null

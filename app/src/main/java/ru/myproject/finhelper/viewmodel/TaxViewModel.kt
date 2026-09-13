@@ -1,6 +1,8 @@
 package ru.myproject.finhelper.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,11 +11,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.myproject.finhelper.R
 import ru.myproject.finhelper.dto.tax_ui_state.ActiveField
 import ru.myproject.finhelper.dto.tax_ui_state.TaxUIState
 import ru.myproject.finhelper.repository.TaxRepository
 
-open class TaxViewModel(private val taxRepository: TaxRepository): ViewModel() {
+open class TaxViewModel(
+    application: Application,
+    private val taxRepository: TaxRepository): AndroidViewModel(application) {
     private val _taxUiState = MutableStateFlow(TaxUIState())
     open val taxUiState: StateFlow<TaxUIState> = _taxUiState.asStateFlow()
     private val _UIMessages = MutableSharedFlow<String>()
@@ -132,7 +137,7 @@ open class TaxViewModel(private val taxRepository: TaxRepository): ViewModel() {
                 val tax = currentState.taxInput.toDoubleOrNull() ?: 0.0
 
                 if (sum <= 0.0) {
-                    _UIMessages.emit("Введите сумму больше нуля")
+                    _UIMessages.emit(application.getString(R.string.enter_a_value_greater_than_zero))
                     return@update currentState
                 }
 
@@ -150,7 +155,7 @@ open class TaxViewModel(private val taxRepository: TaxRepository): ViewModel() {
                 val tax = currentState.taxInput.toDoubleOrNull() ?: 0.0
 
                 if (sum <= 0.0) {
-                    _UIMessages.emit("Введите сумму больше нуля")
+                    _UIMessages.emit(application.getString(R.string.enter_a_value_greater_than_zero))
                     return@update currentState
                 }
 
@@ -169,7 +174,7 @@ open class TaxViewModel(private val taxRepository: TaxRepository): ViewModel() {
                 val tax = currentState.taxInput.toDoubleOrNull() ?: 0.0
 
                 if (sum <= 0.0) {
-                    _UIMessages.emit("Введите сумму больше нуля")
+                    _UIMessages.emit(application.getString(R.string.enter_a_value_greater_than_zero))
                     return@update currentState
                 }
 
@@ -178,7 +183,7 @@ open class TaxViewModel(private val taxRepository: TaxRepository): ViewModel() {
                     val totalSumWithoutTax = taxRepository.calculateTotalSum_Without_PersonalTax(sum, deduction,tax)
                     currentState.copy(taxAmount = personalTax, totalAmount = totalSumWithoutTax)
                 } else {
-                    _UIMessages.emit("НДФЛ не будет начисляться, т.к. вычеты больше или равны сумме")
+                    _UIMessages.emit(application.getString(R.string.deduction_condition))
                     currentState
                 }
             }
@@ -195,17 +200,17 @@ open class TaxViewModel(private val taxRepository: TaxRepository): ViewModel() {
                 val period = currentState.periodInput.toDoubleOrNull() ?: 0.0
 
                 if(area <= 20.0) {
-                    _UIMessages.emit("Налог не начисляется, если площадь меньше или равна 20 кв.м")
+                    _UIMessages.emit(application.getString(R.string.area_condition))
                     return@update currentState
                 }
 
                 if(property == 0.0 || tax == 0.0 || share == 0.0 || period == 0.0) {
-                    _UIMessages.emit("Заполните все поля: введите значения больше нуля")
+                    _UIMessages.emit(application.getString(R.string.filling_condition))
                     return@update currentState
                 }
 
                 if(period > 12) {
-                    _UIMessages.emit("Введите число от 1 до 12")
+                    _UIMessages.emit(application.getString(R.string.number_condition))
                     return@update currentState
                 }
 

@@ -11,6 +11,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import ru.myproject.finhelper.R
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -27,8 +28,8 @@ fun saveImageToGallery(context: Context, bitmap: Bitmap, filename: String): Bool
                 put(MediaStore.MediaColumns.DISPLAY_NAME,filename)
                 //Тип файла
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
-                //Путь сохранения - Картинки/Изображения -> Подпапка "VATCalculator"
-                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + "VATCalculator")
+                //Путь сохранения - Картинки/Изображения -> Подпапка "FinCalculator"
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + "FinCalculator")
             }
             val contentResolver = context.contentResolver
             //мы создаем uri в системе, по которому можно записать данные
@@ -45,8 +46,8 @@ fun saveImageToGallery(context: Context, bitmap: Bitmap, filename: String): Bool
 
             //Получаем путь к публичной директории картинок.
             val imagesDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES + File.separator + "VATCalculator")
-            //Если папки "VATCalculator" не существует, то создаем ее
+                Environment.DIRECTORY_PICTURES + File.separator + "FinCalculator")
+            //Если папки "FinCalculator" не существует, то создаем ее
             if (!imagesDir.exists()) {
                 imagesDir.mkdirs()
             }
@@ -110,9 +111,11 @@ fun shareImage(context: Context, bitmap: Bitmap, filename: String) {
             putExtra(Intent.EXTRA_STREAM, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        context.startActivity(Intent.createChooser(shareIntent, "Поделиться скриншотом"))
+        context.startActivity(Intent.createChooser(shareIntent,
+            context.getString(R.string.Share_a_screenshot)))
     } catch (e: Exception) {
         e.printStackTrace()
-        Toast.makeText(context, "Не удалось поделиться скриншотом", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,
+            context.getString(R.string.Failed_to_share_a_screenshot), Toast.LENGTH_SHORT).show()
     }
 }

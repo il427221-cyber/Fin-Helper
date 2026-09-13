@@ -1,6 +1,5 @@
-package ru.myproject.finhelper.ui.profit.roi
+package ru.myproject.finhelper.ui.profit.ros
 
-import android.app.Application
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,7 +20,7 @@ import ru.myproject.finhelper.ui.profit.PreviewProfitViewModelFactory
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
 @Composable
-fun ShowROI(
+fun ShowROS(
     onShowBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     profitViewModelFactory: ViewModelProvider.Factory)
@@ -40,16 +39,16 @@ fun ShowROI(
 
     val uiState by profitViewModel.uiState.collectAsState()
     val incomeFocusRequester = remember { FocusRequester() }
-    val expensesFocusRequester = remember { FocusRequester() }
+    val profitFocusRequester = remember { FocusRequester() }
 
     LaunchedEffect(uiState.activeField) {
         when (uiState.activeField) {
             ActiveField.INCOME -> incomeFocusRequester.requestFocus()
-            ActiveField.EXPENSES -> expensesFocusRequester.requestFocus()
+            ActiveField.PROFIT -> profitFocusRequester.requestFocus()
             else -> {
                 // Очистка фокуса
                 incomeFocusRequester.freeFocus()
-                expensesFocusRequester.freeFocus()
+                profitFocusRequester.freeFocus()
             }
         }
     }
@@ -69,15 +68,15 @@ fun ShowROI(
     val handleMoveCursorClick: () -> Unit = remember {
         {
             when(uiState.activeField) {
-                ActiveField.INCOME -> { expensesFocusRequester.requestFocus() }
-                ActiveField.EXPENSES -> { incomeFocusRequester.requestFocus() }
+                ActiveField.INCOME -> { profitFocusRequester.requestFocus() }
+                ActiveField.PROFIT -> { incomeFocusRequester.requestFocus() }
                 else -> { incomeFocusRequester.requestFocus() }
             }
         }
     }
 
-    val onCalculateROIButtonClick: (Double,Double) -> Unit = remember {
-        { _, _ -> profitViewModel.calculateROI() }
+    val onCalculateROSButtonClick: (Double,Double) -> Unit = remember {
+        { _, _ -> profitViewModel.calculateROS() }
     }
 
     val onIncomeInputChanged: (String) -> Unit = { newValue ->
@@ -85,9 +84,9 @@ fun ShowROI(
         profitViewModel.setActiveField(ActiveField.INCOME)
     }
 
-    val onExpensesInputChanged: (String) -> Unit = { newValue ->
+    val onProfitInputChanged: (String) -> Unit = { newValue ->
         profitViewModel.updateInput(newValue)
-        profitViewModel.setActiveField(ActiveField.EXPENSES)
+        profitViewModel.setActiveField(ActiveField.PROFIT)
     }
 
     val onActiveFieldChanged: (ActiveField) -> Unit = remember {
@@ -96,20 +95,20 @@ fun ShowROI(
 
             when (newActiveField) {
                 ActiveField.INCOME -> incomeFocusRequester.requestFocus()
-                ActiveField.EXPENSES -> expensesFocusRequester.requestFocus()
+                ActiveField.PROFIT -> profitFocusRequester.requestFocus()
                 else -> {  }
             }
         }
     }
-    ROIRendering(
-        currentROIAmount = uiState.roiIndex,
+    ROSRendering(
+        currentROSAmount = uiState.rosResult,
         incomeInputValue = uiState.incomeInput,
-        expensesInputValue = uiState.expensesInput,
+        profitInputValue = uiState.profitInput,
         activeField = uiState.activeField,
         onIncomeInputChanged = onIncomeInputChanged,
-        onExpensesInputChanged = onExpensesInputChanged,
+        onProfitInputChanged = onProfitInputChanged,
         onActiveFieldChanged = onActiveFieldChanged,
-        onCalculateROIClick = onCalculateROIButtonClick,
+        onCalculateROSClick = onCalculateROSButtonClick,
         onNumberClick = handleNumberInput,
         onCommaClick = handleCommaClick,
         onDeleteClick = handleDeleteClick,
@@ -117,13 +116,13 @@ fun ShowROI(
         onMoveCursorClick = handleMoveCursorClick,
         modifier = modifier,
         incomeFocusRequester = incomeFocusRequester,
-        expensesFocusRequester = expensesFocusRequester
+        profitFocusRequester = profitFocusRequester
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ShowROIPreview() {
+fun ShowROSPreview() {
     // Определяем состояние, которое хотим видеть в этом конкретном Preview
     val initialState = ProfitUiState()
     val context = LocalContext.current
@@ -131,10 +130,10 @@ fun ShowROIPreview() {
     val mockFactory = PreviewProfitViewModelFactory(application,initialState)
 
     FinHelperTheme {
-        ShowROI(
-        onShowBottomBar = {},
-        modifier = Modifier,
-        profitViewModelFactory = mockFactory
-    )
-}
+        ShowROS(
+            onShowBottomBar = {},
+            modifier = Modifier,
+            profitViewModelFactory = mockFactory
+        )
+    }
 }

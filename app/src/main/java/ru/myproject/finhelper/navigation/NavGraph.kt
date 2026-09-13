@@ -20,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import ru.myproject.finhelper.features.screenshot.ScreenShot
 import ru.myproject.finhelper.features.appBar.TopAppBarBack
 import ru.myproject.finhelper.ui.profit.roi.ShowROI
+import ru.myproject.finhelper.ui.profit.ros.ShowROS
 import ru.myproject.finhelper.ui.taxes.income_tax.ShowPersonalTax
 import ru.myproject.finhelper.ui.taxes.property_tax.ShowPropertyTax
 import ru.myproject.finhelper.ui.taxes.vat.ShowVATAdded
@@ -110,6 +111,20 @@ fun MyAppNavGraph(appViewModelFactory: ViewModelProvider.Factory) {
                             onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
                             { modifier ->
                                 ShowROI(
+                                    onShowBottomBar = {show -> showBottomBar = show},
+                                    modifier = modifier,
+                                    profitViewModelFactory = appViewModelFactory
+                                )
+                            }
+                        )
+                    }
+
+                    composable("ROS_Render") {
+                        ScreenShot(navController = navController, currentRoute = currentRoute,
+                            onShowBottomBar = {show -> showBottomBar = show},
+                            onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
+                            { modifier ->
+                                ShowROS(
                                     onShowBottomBar = {show -> showBottomBar = show},
                                     modifier = modifier,
                                     profitViewModelFactory = appViewModelFactory

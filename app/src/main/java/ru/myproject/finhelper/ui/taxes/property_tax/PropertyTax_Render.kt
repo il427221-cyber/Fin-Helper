@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.myproject.finhelper.R
 import ru.myproject.finhelper.features.keyboard.CustomKeyBoard
 import ru.myproject.finhelper.features.numericfield.NumericInputField
 import ru.myproject.finhelper.features.numericfield.NumericOutputField
@@ -73,7 +75,7 @@ fun PropertyTax_Render(
                 ) {
 
                     NumericInputField(
-                        text = "Стоимость\nжилья(руб.):",
+                        text = stringResource(R.string.cost_of_housing),
                         number = propertyInputValue,
                         onValueChange = onPropertyInputChanged,
                         onFocusGained = {onActiveFieldChanged(ActiveField.PROPERTY)},
@@ -83,7 +85,7 @@ fun PropertyTax_Render(
                     )
 
                     NumericInputField(
-                        text = "Площадь\nкв.м.:",
+                        text = stringResource(R.string.area_sq_m),
                         number = areaInputValue,
                         onValueChange = onAreaInputChanged,
                         onFocusGained = { onActiveFieldChanged(ActiveField.AREA) },
@@ -96,7 +98,7 @@ fun PropertyTax_Render(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 NumericInputField(
-                    text = "Ставка\n%:",
+                    text = stringResource(R.string.rate),
                     number = taxInputValue,
                     onValueChange = onTaxInputChanged,
                     onFocusGained = { onActiveFieldChanged(ActiveField.TAX) },
@@ -106,7 +108,7 @@ fun PropertyTax_Render(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 NumericInputField(
-                    text = "Доля\n%:",
+                    text = stringResource(R.string.share),
                     number = shareInputValue,
                     onValueChange = onShareInputChanged,
                     onFocusGained = { onActiveFieldChanged(ActiveField.SHARE) },
@@ -116,7 +118,7 @@ fun PropertyTax_Render(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 NumericInputField(
-                    text = "Период\nвладения (мес.в год):",
+                    text = stringResource(R.string.holding_period),
                     number = periodInputValue,
                     onValueChange = onPeriodInputChanged,
                     onFocusGained = { onActiveFieldChanged(ActiveField.PERIOD) },
@@ -126,9 +128,9 @@ fun PropertyTax_Render(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 NumericOutputField(
-                    text = "Налог:",
+                    text = stringResource(R.string.tax),
                     value = "%.2f".format(currentTaxAmount),
-                    textHint = "руб.",
+                    textHint = stringResource(R.string.rub),
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -145,7 +147,7 @@ fun PropertyTax_Render(
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Рассчитать")
+                    Text(stringResource(R.string.calculate))
                 }
             }
         }

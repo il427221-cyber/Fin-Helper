@@ -35,12 +35,12 @@ fun BottomAppBarHome(modifier: Modifier = Modifier,navController: NavController)
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("Доходность")
-                            Text("организаций")
+                            Text(stringResource(R.string.Profitability))
+                            Text(stringResource(R.string.of_organizations))
                         }
                     }
                     TextButton(onClick = {}) {
-                        Text("Проценты")
+                        Text(stringResource(R.string.Percents))
                     }
                     TextButton(onClick = {}) {
                         Column(
