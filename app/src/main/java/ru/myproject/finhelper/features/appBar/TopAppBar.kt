@@ -45,6 +45,7 @@ fun TopAppBarBack(
                 || currentRoute == "PropertyTaxCalc"
                 || currentRoute == "ROI_Render"
                 || currentRoute == "ROS_Render"
+                || currentRoute == "Payment_Render"
                 ) {
                 IconButton(onClick = onCaptureClick) {
                     Icon(
