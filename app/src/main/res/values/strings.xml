@@ -71,4 +71,8 @@
     <string name="area_condition">Tax will be zero if area is less or equal t0 20 sq.m.</string>
     <string name="filling_condition">Fill all the fields: enter values greater than zero</string>
     <string name="number_condition">Enter a number from 1 to 12</string>
+    <string name="period_months">Period of credit\n(months)</string>
+    <string name="payment">Payment</string>
+    <string name="calculate_payment">Calculate payment</string>
+    <string name="credit_payment">Credit payment</string>
 </resources>

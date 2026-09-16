@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.profit.roi
+package ru.myproject.finhelper.ui.profit.monthPayment
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,23 +23,27 @@ import ru.myproject.finhelper.features.numericfield.NumericOutputField
 import ru.myproject.finhelper.dto.profit_ui_state.ActiveField
 
 @Composable
-fun ROIRendering(
-    currentROIAmount: Double,
-    incomeInputValue: String,
-    expensesInputValue: String,
+fun PaymentRendering(
+    monthPayment: Double,
+    sumInputValue: String,
+    rateInputValue: String,
+    periodInputValue: String,
     activeField: ActiveField,
-    onIncomeInputChanged: (String) -> Unit,
-    onExpensesInputChanged: (String) -> Unit,
+    onSumInputChanged: (String) -> Unit,
+    onRateInputChanged: (String) -> Unit,
+    onPeriodInputChanged: (String) -> Unit,
     onActiveFieldChanged: (ActiveField) -> Unit,
-    onCalculateROIClick: (Double, Double) -> Unit,
+    onCalculatePaymentClick: (Double, Double, Double) -> Unit,
     onNumberClick: (String) -> Unit,
     onCommaClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onClearClick: () -> Unit,
-    onMoveCursorClick: () -> Unit,
+    onMoveCursorDownClick: () -> Unit,
+    onMoveCursorUpClick: () -> Unit,
     modifier: Modifier = Modifier,
-    incomeFocusRequester: FocusRequester,
-    expensesFocusRequester: FocusRequester
+    sumFocusRequester: FocusRequester,
+    rateFocusRequester: FocusRequester,
+    periodFocusRequester: FocusRequester,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {// включает 2 Box
         Box(
@@ -56,20 +60,29 @@ fun ROIRendering(
             ) {
 
                 NumericInputField(
-                    text = stringResource(R.string.Income),
-                    number = incomeInputValue,
-                    onValueChange = onIncomeInputChanged,
-                    onFocusGained = { onActiveFieldChanged(ActiveField.INCOME) },
-                    focusRequester = incomeFocusRequester
+                    text = stringResource(R.string.sum_rub),
+                    number = sumInputValue,
+                    onValueChange = onSumInputChanged,
+                    onFocusGained = { onActiveFieldChanged(ActiveField.SUM) },
+                    focusRequester = sumFocusRequester
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 NumericInputField(
-                    text = stringResource(R.string.Expenses),
-                    number = expensesInputValue,
-                    onValueChange = onExpensesInputChanged,
-                    onFocusGained = { onActiveFieldChanged(ActiveField.EXPENSES) },
-                    focusRequester = expensesFocusRequester
+                    text = stringResource(R.string.rate),
+                    number = rateInputValue,
+                    onValueChange = onRateInputChanged,
+                    onFocusGained = { onActiveFieldChanged(ActiveField.RATE) },
+                    focusRequester = rateFocusRequester
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                NumericInputField(
+                    text = stringResource(R.string.period_months),
+                    number = periodInputValue,
+                    onValueChange = onPeriodInputChanged,
+                    onFocusGained = { onActiveFieldChanged(ActiveField.PERIOD) },
+                    focusRequester = periodFocusRequester
                 )
             }
         }
@@ -83,22 +96,23 @@ fun ROIRendering(
         ) {
 
             NumericOutputField(
-                text = stringResource(R.string.ROI_index),
-                value = "%.0f".format(currentROIAmount),
-                textHint = stringResource(R.string.percent),
+                text = stringResource(R.string.payment),
+                value = "%.2f".format(monthPayment),
+                textHint = stringResource(R.string.rub),
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
                 onClick = {
-                    val income = incomeInputValue.toDoubleOrNull() ?: 0.0
-                    val expenses = expensesInputValue.toDoubleOrNull() ?: 0.0
-                    onCalculateROIClick(income, expenses)
+                    val sum = sumInputValue.toDoubleOrNull() ?: 0.0
+                    val rate = rateInputValue.toDoubleOrNull() ?: 0.0
+                    val period = periodInputValue.toDoubleOrNull() ?: 0.0
+                    onCalculatePaymentClick(sum, rate, period)
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.calculate_roi))
+                Text(stringResource(R.string.calculate_payment))
             }
 
         }
@@ -113,8 +127,8 @@ fun ROIRendering(
                 onCommaClick = onCommaClick,
                 onDeleteClick = onDeleteClick,
                 onClearClick = onClearClick,
-                onMoveCursorDownClick = onMoveCursorClick,
-                onMoveCursorUpClick = onMoveCursorClick
+                onMoveCursorDownClick = onMoveCursorDownClick,
+                onMoveCursorUpClick = onMoveCursorUpClick
             )
         }
     }

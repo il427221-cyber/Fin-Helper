@@ -54,6 +54,10 @@
     <string name="area_condition">Налог равен нулю, если площадь меньше или равна 20 кв.м.</string>
     <string name="filling_condition">Заполните все поля: введите значения больше нуля</string>
     <string name="number_condition">Введите число от 1 до 12</string>
+    <string name="period_months">Срок кредита\n(мес.)</string>
+    <string name="payment">Платеж</string>
+    <string name="calculate_payment">Рассчитать платеж</string>
+    <string name="credit_payment">Платеж по кредиту</string>
 
 
 </resources>

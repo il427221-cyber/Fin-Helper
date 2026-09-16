@@ -16,6 +16,14 @@ private class PreviewMockProfitRepository : ProfitRepository {
     override fun calculateROS(income: Double, profit: Double): Double {
         return 123.45
     }
+
+    override fun calculateMonthPayment(
+        sum: Double,
+        rate: Double,
+        period: Double
+    ): Double {
+        return 123.45
+    }
 }
 /* 2. Создаём Mock-ViewModel для Preview
     Эта ViewModel будет возвращать конкретное состояние,

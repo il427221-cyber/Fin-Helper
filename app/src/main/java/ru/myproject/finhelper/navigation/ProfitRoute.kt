@@ -48,11 +48,10 @@ fun ProfitChoice(onShowBottomBar: (Boolean) -> Unit,
                 Text(stringResource(R.string.Return_on_sales))
             }
         }
-        TextButton(onClick = {}) {
-            Text("")
+        TextButton(onClick = {navController.navigate("Payment_Render")}) {
+                Text(stringResource(R.string.credit_payment))
         }
     }
-
 }
 @Preview
 @Composable

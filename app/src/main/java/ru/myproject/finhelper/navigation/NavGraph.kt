@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ru.myproject.finhelper.features.screenshot.ScreenShot
 import ru.myproject.finhelper.features.appBar.TopAppBarBack
+import ru.myproject.finhelper.ui.profit.monthPayment.ShowPayment
 import ru.myproject.finhelper.ui.profit.roi.ShowROI
 import ru.myproject.finhelper.ui.profit.ros.ShowROS
 import ru.myproject.finhelper.ui.taxes.income_tax.ShowPersonalTax
@@ -132,6 +133,21 @@ fun MyAppNavGraph(appViewModelFactory: ViewModelProvider.Factory) {
                             }
                         )
                     }
+
+                    composable("Payment_Render") {
+                        ScreenShot(navController = navController, currentRoute = currentRoute,
+                            onShowBottomBar = {show -> showBottomBar = show},
+                            onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
+                            { modifier ->
+                                ShowPayment(
+                                    onShowBottomBar = {show -> showBottomBar = show},
+                                    modifier = modifier,
+                                    profitViewModelFactory = appViewModelFactory
+                                )
+                            }
+                        )
+                    }
+
                 }
         }
 }

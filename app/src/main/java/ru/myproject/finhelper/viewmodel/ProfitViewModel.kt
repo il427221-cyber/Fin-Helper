@@ -31,7 +31,13 @@ import ru.myproject.finhelper.repository.ProfitRepository
     // Методы для обновления состояния
     fun updateInput(newValue: String) {
         _uiState.update { currentState ->
-            currentState.copy(incomeInput = newValue, expensesInput = newValue)
+            currentState.copy(
+                incomeInput = newValue,
+                expensesInput = newValue,
+                profitInput = newValue,
+                sumInput = newValue,
+                rateInput = newValue,
+                periodInput = newValue)
         }
     }
 
@@ -52,7 +58,14 @@ import ru.myproject.finhelper.repository.ProfitRepository
                 ActiveField.PROFIT -> currentState.copy(
                     profitInput = appendNumberIfMissing(currentState.profitInput + number))
 
-                else -> currentState // Ничего не делаем, если поле не активно
+                ActiveField.SUM -> currentState.copy(
+                    sumInput = appendNumberIfMissing(currentState.sumInput + number))
+
+                ActiveField.RATE -> currentState.copy(
+                    rateInput = appendNumberIfMissing(currentState.rateInput + number))
+
+                ActiveField.PERIOD -> currentState.copy(
+                    periodInput = appendNumberIfMissing(currentState.periodInput + number))
             }
         }
     }
@@ -68,7 +81,14 @@ import ru.myproject.finhelper.repository.ProfitRepository
                 ActiveField.PROFIT -> currentState.copy(
                     profitInput = appendCommaIfMissing(currentState.profitInput))
 
-                else -> currentState
+                ActiveField.SUM -> currentState.copy(
+                    sumInput = appendCommaIfMissing(currentState.sumInput))
+
+                ActiveField.RATE -> currentState.copy(
+                    rateInput = appendCommaIfMissing(currentState.rateInput))
+
+                ActiveField.PERIOD -> currentState.copy(
+                    periodInput = appendCommaIfMissing(currentState.periodInput))
             }
         }
     }
@@ -84,7 +104,14 @@ import ru.myproject.finhelper.repository.ProfitRepository
                 ActiveField.PROFIT -> currentState.copy(
                     profitInput = deleteOneChar(currentState.profitInput.dropLast(1)))
 
-                else -> currentState
+                ActiveField.SUM -> currentState.copy(
+                    sumInput = deleteOneChar(currentState.sumInput.dropLast(1)))
+
+                ActiveField.RATE -> currentState.copy(
+                    rateInput = deleteOneChar(currentState.rateInput.dropLast(1)))
+
+                ActiveField.PERIOD -> currentState.copy(
+                    periodInput = deleteOneChar(currentState.periodInput.dropLast(1)))
             }
         }
     }
@@ -132,4 +159,21 @@ import ru.myproject.finhelper.repository.ProfitRepository
             }
         }
     }
+        fun calculateMonthPayment() {
+            viewModelScope.launch {
+                _uiState.update { currentState ->
+                    val sum = currentState.sumInput.toDoubleOrNull() ?: 0.0
+                    val rate = currentState.rateInput.toDoubleOrNull() ?: 0.0
+                    val period = currentState.periodInput.toDoubleOrNull() ?: 0.0
+
+                    if(sum == 0.0 || rate == 0.0 || period == 0.0) {
+                        _uiMessages.emit(application.getString(R.string.enter_a_value_greater_than_zero))
+                        return@update currentState
+                    }
+
+                    val payment = profitRepository.calculateMonthPayment(sum,rate,period)
+                    currentState.copy(monthPayment = payment)
+                }
+            }
+        }
 }
