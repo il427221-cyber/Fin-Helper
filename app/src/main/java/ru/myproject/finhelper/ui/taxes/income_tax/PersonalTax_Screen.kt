@@ -1,6 +1,5 @@
 package ru.myproject.finhelper.ui.taxes.income_tax
 
-import android.app.Application
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,7 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.myproject.finhelper.dto.tax_ui_state.ActiveField
 import ru.myproject.finhelper.dto.tax_ui_state.TaxUIState
 import ru.myproject.finhelper.ui.MockApplicationForPreview
-import ru.myproject.finhelper.ui.taxes.PreviewTaxViewModelFactory
+import ru.myproject.finhelper.ui.PreviewTaxViewModelFactory
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 import ru.myproject.finhelper.viewmodel.TaxViewModel
 
@@ -48,7 +47,7 @@ fun ShowPersonalTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
         when(taxUiState.activeField) {
             ActiveField.SUM -> sumFocusRequester.requestFocus()
             ActiveField.DEDUCTION -> deductionFocusRequester.requestFocus()
-            ActiveField.TAX -> taxFocusRequester.requestFocus()
+            ActiveField.RATE -> taxFocusRequester.requestFocus()
             else-> {
                 sumFocusRequester.freeFocus()
                 taxFocusRequester.freeFocus()
@@ -75,7 +74,7 @@ fun ShowPersonalTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
             when (taxUiState.activeField) {
                 ActiveField.SUM -> { deductionFocusRequester.requestFocus() }
                 ActiveField.DEDUCTION -> { taxFocusRequester.requestFocus() }
-                ActiveField.TAX -> { sumFocusRequester.requestFocus() }
+                ActiveField.RATE -> { sumFocusRequester.requestFocus() }
                 else -> { sumFocusRequester.requestFocus() }
             }
         }
@@ -86,7 +85,7 @@ fun ShowPersonalTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
             when (taxUiState.activeField) {
                 ActiveField.SUM -> { taxFocusRequester.requestFocus() }
                 ActiveField.DEDUCTION -> { sumFocusRequester.requestFocus() }
-                ActiveField.TAX -> { deductionFocusRequester.requestFocus() }
+                ActiveField.RATE -> { deductionFocusRequester.requestFocus() }
                 else -> { sumFocusRequester.requestFocus() }
             }
         }
@@ -108,7 +107,7 @@ fun ShowPersonalTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
 
     val onTaxInputChanged: (String) -> Unit = { newValue ->
         taxViewModel.updateInput(newValue)
-        taxViewModel.setActiveField(ActiveField.TAX)
+        taxViewModel.setActiveField(ActiveField.RATE)
     }
 
     val onActiveFieldChanged: (ActiveField) -> Unit = remember {
@@ -118,7 +117,7 @@ fun ShowPersonalTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
             when (newActiveField) {
                 ActiveField.SUM -> sumFocusRequester.requestFocus()
                 ActiveField.DEDUCTION -> deductionFocusRequester.requestFocus()
-                ActiveField.TAX -> taxFocusRequester.requestFocus()
+                ActiveField.RATE -> taxFocusRequester.requestFocus()
                 else -> {  }
             }
         }
@@ -129,7 +128,7 @@ fun ShowPersonalTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
         currentTotalAmount = taxUiState.totalAmount,
         sumInputValue = taxUiState.sumInput,
         deductionInputValue = taxUiState.deductionInput,
-        taxInputValue = taxUiState.taxInput,
+        taxInputValue = taxUiState.rateInput,
         activeField = taxUiState.activeField,
         onSumInputChanged = onSumInputChanged,
         onDeductionInputChanged = onDeductionInputChanged ,

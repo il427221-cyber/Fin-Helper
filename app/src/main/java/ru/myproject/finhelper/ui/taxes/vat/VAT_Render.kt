@@ -70,7 +70,7 @@ fun VATRendering(
                     text = stringResource(R.string.rate),
                     number = taxInputValue,
                     onValueChange = onTaxInputChanged,
-                    onFocusGained = { onActiveFieldChanged(ActiveField.TAX) },
+                    onFocusGained = { onActiveFieldChanged(ActiveField.RATE) },
                     focusRequester = taxFocusRequester
                 )
 

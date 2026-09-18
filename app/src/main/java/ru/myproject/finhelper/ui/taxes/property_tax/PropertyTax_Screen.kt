@@ -1,6 +1,5 @@
 package ru.myproject.finhelper.ui.taxes.property_tax
 
-import android.app.Application
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,7 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.myproject.finhelper.dto.tax_ui_state.ActiveField
 import ru.myproject.finhelper.dto.tax_ui_state.TaxUIState
 import ru.myproject.finhelper.ui.MockApplicationForPreview
-import ru.myproject.finhelper.ui.taxes.PreviewTaxViewModelFactory
+import ru.myproject.finhelper.ui.PreviewTaxViewModelFactory
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 import ru.myproject.finhelper.viewmodel.TaxViewModel
 
@@ -48,7 +47,7 @@ fun ShowPropertyTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
        when(taxUiState.activeField) {
            ActiveField.PROPERTY -> propertyFocusRequester.requestFocus()
            ActiveField.AREA -> areaFocusRequester.requestFocus()
-           ActiveField.TAX -> taxFocusRequester.requestFocus()
+           ActiveField.RATE -> taxFocusRequester.requestFocus()
            ActiveField.SHARE -> shareFocusRequester.requestFocus()
            ActiveField.PERIOD -> periodFocusRequester.requestFocus()
            else -> {
@@ -79,7 +78,7 @@ fun ShowPropertyTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
             when (taxUiState.activeField) {
                 ActiveField.PROPERTY -> { areaFocusRequester.requestFocus() }
                 ActiveField.AREA -> { taxFocusRequester.requestFocus() }
-                ActiveField.TAX -> { shareFocusRequester.requestFocus() }
+                ActiveField.RATE -> { shareFocusRequester.requestFocus() }
                 ActiveField.SHARE -> { periodFocusRequester.requestFocus() }
                 else -> { propertyFocusRequester.requestFocus() }
             }
@@ -91,7 +90,7 @@ fun ShowPropertyTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
             when (taxUiState.activeField) {
                 ActiveField.PROPERTY -> { periodFocusRequester.requestFocus() }
                 ActiveField.AREA -> { propertyFocusRequester.requestFocus() }
-                ActiveField.TAX -> { areaFocusRequester.requestFocus() }
+                ActiveField.RATE -> { areaFocusRequester.requestFocus() }
                 ActiveField.SHARE -> { taxFocusRequester.requestFocus() }
                 ActiveField.PERIOD -> { shareFocusRequester.requestFocus() }
                 else -> { propertyFocusRequester.requestFocus() }
@@ -116,7 +115,7 @@ fun ShowPropertyTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
 
     val onTaxInputChanged: (String) -> Unit = { newValue ->
         taxViewModel.updateInput(newValue)
-        taxViewModel.setActiveField(ActiveField.TAX)
+        taxViewModel.setActiveField(ActiveField.RATE)
     }
 
     val onShareInputChanged: (String) -> Unit = { newValue ->
@@ -136,7 +135,7 @@ fun ShowPropertyTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
             when (newActiveField) {
                 ActiveField.PROPERTY -> propertyFocusRequester.requestFocus()
                 ActiveField.AREA -> areaFocusRequester.requestFocus()
-                ActiveField.TAX -> taxFocusRequester.requestFocus()
+                ActiveField.RATE -> taxFocusRequester.requestFocus()
                 ActiveField.SHARE -> shareFocusRequester.requestFocus()
                 ActiveField.PERIOD -> periodFocusRequester.requestFocus()
                 else -> {  }
@@ -148,7 +147,7 @@ fun ShowPropertyTax(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Mod
         currentTaxAmount = taxUiState.taxAmount,
         propertyInputValue = taxUiState.propertyInput,
         areaInputValue = taxUiState.areaInput,
-        taxInputValue = taxUiState.taxInput,
+        taxInputValue = taxUiState.rateInput,
         shareInputValue = taxUiState.shareInput,
         periodInputValue = taxUiState.periodInput,
         activeField = taxUiState.activeField,

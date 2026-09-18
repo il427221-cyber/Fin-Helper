@@ -30,7 +30,7 @@ open class TaxViewModel(
             currentState.copy(
                 sumInput = newValue,
                 deductionInput = newValue,
-                taxInput = newValue,
+                rateInput = newValue,
                 propertyInput = newValue,
                 areaInput = newValue,
                 shareInput = newValue,
@@ -52,8 +52,8 @@ open class TaxViewModel(
                 ActiveField.DEDUCTION -> currentState.copy(
                     deductionInput = appendNumberIfMissing(currentState.deductionInput + number))
 
-                ActiveField.TAX -> currentState.copy(
-                    taxInput = appendNumberIfMissing(currentState.taxInput + number))
+                ActiveField.RATE -> currentState.copy(
+                    rateInput = appendNumberIfMissing(currentState.rateInput + number))
 
                 ActiveField.PROPERTY -> currentState.copy(
                     propertyInput = appendNumberIfMissing(currentState.propertyInput + number))
@@ -80,8 +80,8 @@ open class TaxViewModel(
                 ActiveField.DEDUCTION -> currentState.copy(
                     deductionInput = appendCommaIfMissing(currentState.deductionInput))
 
-                ActiveField.TAX -> currentState.copy(
-                    taxInput = appendCommaIfMissing(currentState.taxInput))
+                ActiveField.RATE -> currentState.copy(
+                    rateInput = appendCommaIfMissing(currentState.rateInput))
 
                 ActiveField.PROPERTY -> currentState.copy(
                     propertyInput = appendCommaIfMissing(currentState.propertyInput))
@@ -108,8 +108,8 @@ open class TaxViewModel(
                 ActiveField.DEDUCTION -> currentState.copy(
                     deductionInput = deleteOneChar(currentState.deductionInput.dropLast(1)))
 
-                ActiveField.TAX -> currentState.copy(
-                    taxInput = deleteOneChar(currentState.taxInput.dropLast(1)))
+                ActiveField.RATE -> currentState.copy(
+                    rateInput = deleteOneChar(currentState.rateInput.dropLast(1)))
 
                 ActiveField.PROPERTY -> currentState.copy(
                     propertyInput = deleteOneChar(currentState.propertyInput.dropLast(1)))
@@ -134,7 +134,7 @@ open class TaxViewModel(
         viewModelScope.launch {
             _taxUiState.update { currentState -> // Лямбда для update - это suspend-контекст
                 val sum = currentState.sumInput.toDoubleOrNull() ?: 0.0
-                val tax = currentState.taxInput.toDoubleOrNull() ?: 0.0
+                val tax = currentState.rateInput.toDoubleOrNull() ?: 0.0
 
                 if (sum <= 0.0) {
                     _UIMessages.emit(application.getString(R.string.enter_a_value_greater_than_zero))
@@ -152,7 +152,7 @@ open class TaxViewModel(
         viewModelScope.launch {
             _taxUiState.update { currentState ->
                 val sum = currentState.sumInput.toDoubleOrNull() ?: 0.0
-                val tax = currentState.taxInput.toDoubleOrNull() ?: 0.0
+                val tax = currentState.rateInput.toDoubleOrNull() ?: 0.0
 
                 if (sum <= 0.0) {
                     _UIMessages.emit(application.getString(R.string.enter_a_value_greater_than_zero))
@@ -171,7 +171,7 @@ open class TaxViewModel(
             _taxUiState.update { currentState ->
                 val sum = currentState.sumInput.toDoubleOrNull() ?: 0.0
                 val deduction = currentState.deductionInput.toDoubleOrNull() ?: 0.0
-                val tax = currentState.taxInput.toDoubleOrNull() ?: 0.0
+                val tax = currentState.rateInput.toDoubleOrNull() ?: 0.0
 
                 if (sum <= 0.0) {
                     _UIMessages.emit(application.getString(R.string.enter_a_value_greater_than_zero))
@@ -195,7 +195,7 @@ open class TaxViewModel(
             _taxUiState.update { currentState ->
                 val property = currentState.propertyInput.toDoubleOrNull() ?: 0.0
                 val area = currentState.areaInput.toDoubleOrNull() ?: 0.0
-                val tax = currentState.taxInput.toDoubleOrNull() ?: 0.0
+                val tax = currentState.rateInput.toDoubleOrNull() ?: 0.0
                 val share = currentState.shareInput.toDoubleOrNull() ?: 0.0
                 val period = currentState.periodInput.toDoubleOrNull() ?: 0.0
 
@@ -221,4 +221,41 @@ open class TaxViewModel(
             }
         }
     }
+
+    fun simpleDeposit() {
+        viewModelScope.launch {
+            _taxUiState.update { currentState ->
+                val sum = currentState.sumInput.toDoubleOrNull() ?: 0.0
+                val rate = currentState.rateInput.toDoubleOrNull() ?: 0.0
+                val period = currentState.periodInput.toDoubleOrNull() ?: 0.0
+
+                if(sum == 0.0 || rate == 0.0 || period == 0.0) {
+                    _UIMessages.emit(application.getString(R.string.filling_condition))
+                    return@update currentState
+                }
+
+                val totalSum = taxRepository.simpleDeposit(sum, rate, period)
+                currentState.copy(totalAmount = totalSum)
+            }
+        }
+    }
+
+    fun capitalizedDeposit() {
+        viewModelScope.launch {
+            _taxUiState.update { currentState ->
+                val sum = currentState.sumInput.toDoubleOrNull() ?: 0.0
+                val rate = currentState.rateInput.toDoubleOrNull() ?: 0.0
+                val period = currentState.periodInput.toDoubleOrNull() ?: 0.0
+
+                if(sum == 0.0 || rate == 0.0 || period == 0.0) {
+                    _UIMessages.emit(application.getString(R.string.filling_condition))
+                    return@update currentState
+                }
+
+                val totalSum = taxRepository.capitalizedDeposit(sum, rate, period)
+                currentState.copy(totalAmount = totalSum)
+            }
+        }
+    }
+
 }

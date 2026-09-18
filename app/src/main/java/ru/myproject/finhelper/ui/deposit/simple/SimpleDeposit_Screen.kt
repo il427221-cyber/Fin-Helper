@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.profit.monthPayment
+package ru.myproject.finhelper.ui.deposit.simple
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
@@ -12,64 +12,63 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.myproject.finhelper.viewmodel.ProfitViewModel
-import ru.myproject.finhelper.dto.profit_ui_state.ActiveField
-import ru.myproject.finhelper.dto.profit_ui_state.ProfitUiState
+import ru.myproject.finhelper.viewmodel.TaxViewModel
+import ru.myproject.finhelper.dto.tax_ui_state.ActiveField
+import ru.myproject.finhelper.dto.tax_ui_state.TaxUIState
 import ru.myproject.finhelper.ui.MockApplicationForPreview
-import ru.myproject.finhelper.ui.PreviewProfitViewModelFactory
+import ru.myproject.finhelper.ui.PreviewTaxViewModelFactory
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
 @Composable
-fun ShowPayment(
-    onShowBottomBar: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-    profitViewModelFactory: ViewModelProvider.Factory)
+fun ShowDeposit(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Modifier,
+                 finViewModelFactory: ViewModelProvider.Factory)
 {
-    val profitViewModel: ProfitViewModel = viewModel(factory = profitViewModelFactory)
     val context = LocalContext.current
+    val taxViewModel: TaxViewModel = viewModel(factory = finViewModelFactory)
 
-    LaunchedEffect(profitViewModel) {
-        profitViewModel.uiMessages.collect{message ->
+    LaunchedEffect(taxViewModel) {
+        taxViewModel.uiMessages.collect{ message ->
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         }
     }
+
     LaunchedEffect(Unit) {
         onShowBottomBar(false)
     }
 
-    val uiState by profitViewModel.uiState.collectAsState()
+    val taxUiState by taxViewModel.taxUiState.collectAsState()
     val sumFocusRequester = remember { FocusRequester() }
     val rateFocusRequester = remember { FocusRequester() }
     val periodFocusRequester = remember { FocusRequester() }
 
-    LaunchedEffect(uiState.activeField) {
-        when (uiState.activeField) {
+    LaunchedEffect(taxViewModel) {
+        when(taxUiState.activeField) {
             ActiveField.SUM -> sumFocusRequester.requestFocus()
             ActiveField.RATE -> rateFocusRequester.requestFocus()
             ActiveField.PERIOD -> periodFocusRequester.requestFocus()
             else -> {
                 sumFocusRequester.freeFocus()
                 rateFocusRequester.freeFocus()
-                periodFocusRequester.freeFocus()
             }
         }
     }
 
-    val handleNumberInput: (String) -> Unit =  { number ->
-        profitViewModel.appendNumberToActiveField(number) }
+    val handleNumberInput: (String) -> Unit =  {number ->
+        taxViewModel.appendNumberToActiveField(number)
+    }
 
-    val handleCommaClick: () -> Unit =  { profitViewModel.appendCommaToActiveField() }
+    val handleCommaClick: () -> Unit =  { taxViewModel.appendCommaToActiveField() }
 
-    val handleDeleteClick: () -> Unit =  { profitViewModel.deleteLastCharFromActiveField() }
+    val handleDeleteClick: () -> Unit =  { taxViewModel.deleteLastCharFromActiveField() }
 
-    val handleClearClick: () -> Unit =  {
-        profitViewModel.clearAllFields()
+    val handleClearClick: () -> Unit = {
+        taxViewModel.clearAllFields()
         sumFocusRequester.requestFocus()
     }
 
-    val handleMoveCursorDownClick: () -> Unit = remember {
+    val handleMoveCursorDown: () -> Unit = remember {
         {
-            when(uiState.activeField) {
+            when(taxUiState.activeField) {
                 ActiveField.SUM -> { rateFocusRequester.requestFocus() }
                 ActiveField.RATE -> { periodFocusRequester.requestFocus() }
                 ActiveField.PERIOD -> { sumFocusRequester.requestFocus() }
@@ -78,9 +77,9 @@ fun ShowPayment(
         }
     }
 
-    val handleMoveCursorUpClick: () -> Unit = remember {
+    val handleMoveCursorUp: () -> Unit = remember {
         {
-            when(uiState.activeField) {
+            when(taxUiState.activeField) {
                 ActiveField.SUM -> { periodFocusRequester.requestFocus() }
                 ActiveField.RATE -> { sumFocusRequester.requestFocus() }
                 ActiveField.PERIOD -> { rateFocusRequester.requestFocus() }
@@ -89,54 +88,60 @@ fun ShowPayment(
         }
     }
 
-    val onCalculatePayment: (Double,Double, Double) -> Unit = remember {
-        { _, _, _ -> profitViewModel.calculateMonthPayment() }
+    val onCalculateSimpleDeposit: (Double,Double, Double) -> Unit = remember {
+        { _,_,_ -> taxViewModel.simpleDeposit() }
+    }
+
+    val onCalculateCapitalDeposit: (Double,Double,Double) -> Unit = remember {
+        { _,_,_ -> taxViewModel.capitalizedDeposit()}
     }
 
     val onSumInputChanged: (String) -> Unit = { newValue ->
-        profitViewModel.updateInput(newValue)
-        profitViewModel.setActiveField(ActiveField.SUM)
+        taxViewModel.updateInput(newValue)
+        taxViewModel.setActiveField(ActiveField.SUM)
     }
 
-    val onRateInputChanged: (String) -> Unit = { newValue ->
-        profitViewModel.updateInput(newValue)
-        profitViewModel.setActiveField(ActiveField.RATE)
+    val onTaxInputChanged: (String) -> Unit = { newValue ->
+        taxViewModel.updateInput(newValue)
+        taxViewModel.setActiveField(ActiveField.RATE)
     }
 
     val onPeriodInputChanged: (String) -> Unit = { newValue ->
-        profitViewModel.updateInput(newValue)
-        profitViewModel.setActiveField(ActiveField.PERIOD)
+        taxViewModel.updateInput(newValue)
+        taxViewModel.setActiveField(ActiveField.PERIOD)
     }
 
     val onActiveFieldChanged: (ActiveField) -> Unit = remember {
         {newActiveField ->
-            uiState.activeField = newActiveField
+            taxUiState.activeField = newActiveField
 
             when (newActiveField) {
                 ActiveField.SUM -> sumFocusRequester.requestFocus()
-                ActiveField.RATE-> rateFocusRequester.requestFocus()
+                ActiveField.RATE -> rateFocusRequester.requestFocus()
                 ActiveField.PERIOD -> periodFocusRequester.requestFocus()
-                else -> {  }
+                else -> { /* При сбросе фокуса на NONE, не фокусируемся ни на чем */ }
             }
         }
     }
-    PaymentRendering(
-        monthPayment = uiState.monthPayment,
-        sumInputValue = uiState.sumInput,
-        rateInputValue = uiState.rateInput,
-        periodInputValue = uiState.periodInput,
-        activeField = uiState.activeField,
+
+    SimpleDepRender(
+        currentTotalAmount = taxUiState.totalAmount,
+        sumInputValue = taxUiState.sumInput,
+        rateInputValue = taxUiState.rateInput,
+        periodInputValue = taxUiState.periodInput,
+        activeField = taxUiState.activeField,
         onSumInputChanged = onSumInputChanged,
-        onRateInputChanged = onRateInputChanged,
+        onRateInputChanged = onTaxInputChanged,
         onPeriodInputChanged = onPeriodInputChanged,
         onActiveFieldChanged = onActiveFieldChanged,
-        onCalculatePaymentClick = onCalculatePayment,
+        onCalculateSimpleDep = onCalculateSimpleDeposit,
+        onCalculateCapitalDep = onCalculateCapitalDeposit,
         onNumberClick = handleNumberInput,
         onCommaClick = handleCommaClick,
         onDeleteClick = handleDeleteClick,
         onClearClick = handleClearClick,
-        onMoveCursorDownClick = handleMoveCursorDownClick,
-        onMoveCursorUpClick = handleMoveCursorUpClick,
+        onMoveCursorDownClick = handleMoveCursorDown,
+        onMoveCursorUpClick = handleMoveCursorUp,
         modifier = modifier,
         sumFocusRequester = sumFocusRequester,
         rateFocusRequester = rateFocusRequester,
@@ -146,17 +151,16 @@ fun ShowPayment(
 
 @Preview(showBackground = true)
 @Composable
-fun ShowPaymentPreview() {
-    val initialState = ProfitUiState()
+fun ShowVATPreview() {
+    val initialState = TaxUIState()
     val context = LocalContext.current
     val application = MockApplicationForPreview(context)
-    val mockFactory = PreviewProfitViewModelFactory(application,initialState)
+    val mockFactory = PreviewTaxViewModelFactory(application,initialState)
 
     FinHelperTheme {
-        ShowPayment(
+        ShowDeposit(
             onShowBottomBar = {},
-            modifier = Modifier,
-            profitViewModelFactory = mockFactory
+            finViewModelFactory = mockFactory
         )
     }
 }

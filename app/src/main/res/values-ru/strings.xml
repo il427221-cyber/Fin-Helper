@@ -58,6 +58,9 @@
     <string name="payment">Платеж</string>
     <string name="calculate_payment">Рассчитать платеж</string>
     <string name="credit_payment">Платеж по кредиту</string>
+    <string name="calculate_sum">Рассчитать сумму</string>
+    <string name="calculate_sum_with_yearly_capitalization">Рассчитать сумму (с ежегодной капитализацией)</string>
+    <string name="period_in_years">Период (в годах)</string>
 
 
 </resources>

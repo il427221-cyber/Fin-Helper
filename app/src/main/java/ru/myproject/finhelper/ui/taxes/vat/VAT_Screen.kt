@@ -1,6 +1,5 @@
 package ru.myproject.finhelper.ui.taxes.vat
 
-import android.app.Application
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +16,7 @@ import ru.myproject.finhelper.viewmodel.TaxViewModel
 import ru.myproject.finhelper.dto.tax_ui_state.ActiveField
 import ru.myproject.finhelper.dto.tax_ui_state.TaxUIState
 import ru.myproject.finhelper.ui.MockApplicationForPreview
-import ru.myproject.finhelper.ui.taxes.PreviewTaxViewModelFactory
+import ru.myproject.finhelper.ui.PreviewTaxViewModelFactory
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
 @Composable
@@ -44,7 +43,7 @@ fun ShowVATAdded(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Modifi
     LaunchedEffect(taxViewModel) {
         when(taxUiState.activeField) {
             ActiveField.SUM -> sumFocusRequester.requestFocus()
-            ActiveField.TAX -> taxFocusRequester.requestFocus()
+            ActiveField.RATE -> taxFocusRequester.requestFocus()
             else -> {
                 sumFocusRequester.freeFocus()
                 taxFocusRequester.freeFocus()
@@ -69,7 +68,7 @@ fun ShowVATAdded(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Modifi
         {
             when(taxUiState.activeField) {
                 ActiveField.SUM -> { taxFocusRequester.requestFocus() }
-                ActiveField.TAX -> { sumFocusRequester.requestFocus() }
+                ActiveField.RATE -> { sumFocusRequester.requestFocus() }
                 else -> { sumFocusRequester.requestFocus() }
             }
         }
@@ -90,7 +89,7 @@ fun ShowVATAdded(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Modifi
 
     val onTaxInputChanged: (String) -> Unit = { newValue ->
         taxViewModel.updateInput(newValue)
-        taxViewModel.setActiveField(ActiveField.TAX)
+        taxViewModel.setActiveField(ActiveField.RATE)
     }
 
     val onActiveFieldChanged: (ActiveField) -> Unit = remember {
@@ -99,7 +98,7 @@ fun ShowVATAdded(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Modifi
 
             when (newActiveField) {
                 ActiveField.SUM -> sumFocusRequester.requestFocus()
-                ActiveField.TAX -> taxFocusRequester.requestFocus()
+                ActiveField.RATE -> taxFocusRequester.requestFocus()
                 else -> { /* При сбросе фокуса на NONE, не фокусируемся ни на чем */ }
             }
         }
@@ -109,7 +108,7 @@ fun ShowVATAdded(onShowBottomBar: (Boolean) -> Unit, modifier: Modifier = Modifi
         currentVatAmount = taxUiState.taxAmount,
         currentTotalAmount = taxUiState.totalAmount,
         sumInputValue = taxUiState.sumInput,
-        taxInputValue = taxUiState.taxInput,
+        taxInputValue = taxUiState.rateInput,
         activeField = taxUiState.activeField,
         onSumInputChanged = onSumInputChanged,
         onTaxInputChanged = onTaxInputChanged,
