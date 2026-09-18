@@ -75,4 +75,7 @@
     <string name="payment">Payment</string>
     <string name="calculate_payment">Calculate payment</string>
     <string name="credit_payment">Credit payment</string>
+    <string name="calculate_sum">Calculate sum</string>
+    <string name="calculate_sum_with_yearly_capitalization">Calculate sum (with yearly capitalization)</string>
+    <string name="period_in_years">Period(in years)</string>
 </resources>

@@ -3,7 +3,7 @@ package ru.myproject.finhelper.dto.tax_ui_state
 data class TaxUIState(
     val sumInput: String = "",
     val deductionInput: String = "",
-    val taxInput: String = "",
+    val rateInput: String = "",
     val propertyInput: String = "",
     val areaInput: String = "",
     val shareInput: String = "",
@@ -14,5 +14,5 @@ data class TaxUIState(
 )
 
 enum class ActiveField {
-    SUM, DEDUCTION, TAX, PROPERTY, AREA, SHARE, PERIOD, NONE
+    SUM, DEDUCTION, RATE, PROPERTY, AREA, SHARE, PERIOD, NONE
 }

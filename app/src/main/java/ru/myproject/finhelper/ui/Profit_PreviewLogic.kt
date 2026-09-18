@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.profit
+package ru.myproject.finhelper.ui
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

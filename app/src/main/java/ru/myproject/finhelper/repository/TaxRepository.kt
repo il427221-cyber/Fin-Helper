@@ -16,4 +16,8 @@ interface TaxRepository {
         tax: Double,
         share: Double,
         period: Double): Double
+
+    fun simpleDeposit(sum:Double, rate: Double, period: Double): Double
+
+    fun capitalizedDeposit(sum:Double, rate: Double, period: Double): Double
 }

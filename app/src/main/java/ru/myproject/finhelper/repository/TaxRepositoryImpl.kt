@@ -1,5 +1,7 @@
 package ru.myproject.finhelper.repository
 
+import kotlin.math.pow
+
 class TaxRepositoryImpl: TaxRepository {
     override fun calculateVAT(sum: Double, tax: Double): Double {
         val taxValue = tax / 100
@@ -36,5 +38,16 @@ class TaxRepositoryImpl: TaxRepository {
        val taxableAreaValue = cadastralValue * taxableArea
        val totalTax = taxableAreaValue * tax / 100.0 * share / 100.0 * period / 12.0
        return totalTax
+    }
+
+    override fun simpleDeposit(sum: Double, rate: Double, period: Double): Double {
+        val coefficient = (1 + (rate/100) * period)
+        return sum * coefficient
+    }
+
+    override fun capitalizedDeposit(sum: Double, rate: Double, period: Double): Double {
+        val base = (1 + (rate/100))
+        val coefficient = base.pow(period)
+        return sum * coefficient
     }
 }

@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.taxes.income_tax
+package ru.myproject.finhelper.ui.deposit.simple
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,18 +23,18 @@ import ru.myproject.finhelper.features.numericfield.NumericOutputField
 import ru.myproject.finhelper.dto.tax_ui_state.ActiveField
 
 @Composable
-fun PersonalTax_Render(
-    currentTaxAmount: Double,
+fun SimpleDepRender(
     currentTotalAmount: Double,
-    sumInputValue: String, // Текущее значение поля "Сумма"
-    deductionInputValue: String, // Текущее значение поля "Вычеты"
-    taxInputValue: String, // Текущее значение поля "Ставка"
+    sumInputValue: String,
+    rateInputValue: String,
+    periodInputValue: String,
     activeField: ActiveField,
-    onSumInputChanged: (String) -> Unit, // Колбэк для изменения sumInputValue
-    onDeductionInputChanged: (String) -> Unit, // Колбэк для изменения deductionInputValue
-    onTaxInputChanged: (String) -> Unit, // Колбэк для изменения taxInputValue
-    onActiveFieldChanged: (ActiveField) -> Unit, // Колбэк для оповещения о смене активного поля
-    onCalculateTaxClick: (sum: Double, deduction: Double, tax: Double) -> Unit,
+    onSumInputChanged: (String) -> Unit,
+    onRateInputChanged: (String) -> Unit,
+    onPeriodInputChanged: (String) -> Unit,
+    onActiveFieldChanged: (ActiveField) -> Unit,
+    onCalculateSimpleDep: (sum: Double, rate: Double, period: Double) -> Unit,
+    onCalculateCapitalDep: (sum: Double, rate: Double, period: Double) -> Unit,
     onNumberClick: (String) -> Unit,
     onCommaClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -43,8 +43,8 @@ fun PersonalTax_Render(
     onMoveCursorUpClick: () -> Unit,
     modifier: Modifier = Modifier,
     sumFocusRequester: FocusRequester,
-    deductionFocusRequester: FocusRequester,
-    taxFocusRequester: FocusRequester
+    rateFocusRequester: FocusRequester,
+    periodFocusRequester: FocusRequester
 ) {
     Column(modifier = Modifier.fillMaxSize()) {// включает 2 Box
         Box(
@@ -64,56 +64,60 @@ fun PersonalTax_Render(
                     text = stringResource(R.string.sum_rub),
                     number = sumInputValue,
                     onValueChange = onSumInputChanged,
-                    onFocusGained = {onActiveFieldChanged(ActiveField.SUM)},
+                    onFocusGained = { onActiveFieldChanged(ActiveField.SUM) },
                     focusRequester = sumFocusRequester
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                NumericInputField(
-                    text = stringResource(R.string.deduction_rub),
-                    number = deductionInputValue,
-                    onValueChange = onDeductionInputChanged,
-                    onFocusGained = { onActiveFieldChanged(ActiveField.DEDUCTION) },
-                    focusRequester = deductionFocusRequester
-                )
-
                 Spacer(modifier = Modifier.height(16.dp))
 
                 NumericInputField(
                     text = stringResource(R.string.rate),
-                    number = taxInputValue,
-                    onValueChange = onTaxInputChanged,
+                    number = rateInputValue,
+                    onValueChange = onRateInputChanged,
                     onFocusGained = { onActiveFieldChanged(ActiveField.RATE) },
-                    focusRequester = taxFocusRequester
+                    focusRequester = rateFocusRequester
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                NumericInputField(
+                    text = stringResource(R.string.period_in_years),
+                    number = periodInputValue,
+                    onValueChange = onPeriodInputChanged,
+                    onFocusGained = { onActiveFieldChanged(ActiveField.PERIOD) },
+                    focusRequester = periodFocusRequester
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 NumericOutputField(
-                    text = stringResource(R.string.personal_income_tax),
-                    value = "%.2f".format(currentTaxAmount),
-                    textHint = stringResource(R.string.rub),
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                NumericOutputField(
-                    text = stringResource(R.string.sum_after_deduction),
+                    text = stringResource(R.string.total_sum),
                     value = "%.2f".format(currentTotalAmount),
                     textHint = stringResource(R.string.rub),
+
                     )
 
                 Button(
                     onClick = {
                         val sum = sumInputValue.toDoubleOrNull() ?: 0.0
-                        val deduction = deductionInputValue.toDoubleOrNull() ?: 0.0
-                        val tax = taxInputValue.toDoubleOrNull() ?: 0.0
-                        onCalculateTaxClick(sum, deduction,tax)
+                        val rate = rateInputValue.toDoubleOrNull() ?: 0.0
+                        val period = periodInputValue.toDoubleOrNull() ?: 0.0
+                        onCalculateSimpleDep(sum, rate, period)
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(stringResource(R.string.calculate))
+                    Text(stringResource(R.string.calculate_sum))
+                }
+
+                Button(
+                    onClick = {
+                        val sum = sumInputValue.toDoubleOrNull() ?: 0.0
+                        val rate = rateInputValue.toDoubleOrNull() ?: 0.0
+                        val period = periodInputValue.toDoubleOrNull() ?: 0.0
+                        onCalculateCapitalDep(sum, rate, period)
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.calculate_sum_with_yearly_capitalization))
                 }
             }
         }

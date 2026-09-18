@@ -39,16 +39,8 @@ fun BottomAppBarHome(modifier: Modifier = Modifier,navController: NavController)
                             Text(stringResource(R.string.of_organizations))
                         }
                     }
-                    TextButton(onClick = {}) {
-                        Text(stringResource(R.string.Percents))
-                    }
-                    TextButton(onClick = {}) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text("Конвертер")
-                            Text("валют")
-                        }
+                    TextButton(onClick = {navController.navigate("DepositUI")}) {
+                        Text("Вклады")
                     }
                 }
             }

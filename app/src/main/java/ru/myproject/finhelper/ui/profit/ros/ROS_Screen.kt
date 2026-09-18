@@ -16,7 +16,7 @@ import ru.myproject.finhelper.viewmodel.ProfitViewModel
 import ru.myproject.finhelper.dto.profit_ui_state.ActiveField
 import ru.myproject.finhelper.dto.profit_ui_state.ProfitUiState
 import ru.myproject.finhelper.ui.MockApplicationForPreview
-import ru.myproject.finhelper.ui.profit.PreviewProfitViewModelFactory
+import ru.myproject.finhelper.ui.PreviewProfitViewModelFactory
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
 @Composable

@@ -1,6 +1,5 @@
 package ru.myproject.finhelper.ui.profit.roi
 
-import android.app.Application
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +16,7 @@ import ru.myproject.finhelper.viewmodel.ProfitViewModel
 import ru.myproject.finhelper.dto.profit_ui_state.ActiveField
 import ru.myproject.finhelper.dto.profit_ui_state.ProfitUiState
 import ru.myproject.finhelper.ui.MockApplicationForPreview
-import ru.myproject.finhelper.ui.profit.PreviewProfitViewModelFactory
+import ru.myproject.finhelper.ui.PreviewProfitViewModelFactory
 import ru.myproject.finhelper.ui.theme.FinHelperTheme
 
 @Composable

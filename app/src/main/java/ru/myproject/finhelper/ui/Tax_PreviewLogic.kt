@@ -1,4 +1,4 @@
-package ru.myproject.finhelper.ui.taxes
+package ru.myproject.finhelper.ui
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -22,6 +22,22 @@ private class PreviewMockTaxRepository: TaxRepository {
         period: Double
     ): Double {
        return 123.45
+    }
+
+    override fun simpleDeposit(
+        sum: Double,
+        rate: Double,
+        period: Double
+    ): Double {
+        return 123.45
+    }
+
+    override fun capitalizedDeposit(
+        sum: Double,
+        rate: Double,
+        period: Double
+    ): Double {
+        return 123.45
     }
 }
 private class PreviewMockTaxViewModel(

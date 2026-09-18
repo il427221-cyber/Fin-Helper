@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ru.myproject.finhelper.features.screenshot.ScreenShot
 import ru.myproject.finhelper.features.appBar.TopAppBarBack
+import ru.myproject.finhelper.ui.deposit.simple.ShowDeposit
 import ru.myproject.finhelper.ui.profit.monthPayment.ShowPayment
 import ru.myproject.finhelper.ui.profit.roi.ShowROI
 import ru.myproject.finhelper.ui.profit.ros.ShowROS
@@ -67,6 +68,12 @@ fun MyAppNavGraph(appViewModelFactory: ViewModelProvider.Factory) {
                             onShowBottomBar = {show -> showBottomBar = show},
                             navController = navController)
                     }
+                    composable("DepositUI") {
+                        DepositChoice(
+                            onShowBottomBar = {show -> showBottomBar = show},
+                            navController = navController)
+                    }
+
                     composable("VATCalc_UI") {
                         ScreenShot(navController = navController, currentRoute = currentRoute,
                             onShowBottomBar = {show -> showBottomBar = show},
@@ -143,6 +150,20 @@ fun MyAppNavGraph(appViewModelFactory: ViewModelProvider.Factory) {
                                     onShowBottomBar = {show -> showBottomBar = show},
                                     modifier = modifier,
                                     profitViewModelFactory = appViewModelFactory
+                                )
+                            }
+                        )
+                    }
+
+                    composable("SimpleDep_Render") {
+                        ScreenShot(navController = navController, currentRoute = currentRoute,
+                            onShowBottomBar = {show -> showBottomBar = show},
+                            onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
+                            { modifier ->
+                                ShowDeposit(
+                                    onShowBottomBar = {show -> showBottomBar = show},
+                                    modifier = modifier,
+                                    finViewModelFactory = appViewModelFactory
                                 )
                             }
                         )
