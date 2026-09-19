@@ -50,4 +50,18 @@ class TaxRepositoryImpl: TaxRepository {
         val coefficient = base.pow(period)
         return sum * coefficient
     }
+
+    override fun complexDeposit(
+        sum: Double,
+        rate: Double,
+        period: Double,
+        quantity: Double
+    ): Double {
+        val result = rate/100/quantity
+        val round = "%.4f".format(result)
+        val base = (1 + result)
+        val totalPeriod = quantity * period
+        val coefficient = base.pow(totalPeriod)
+        return sum * coefficient
+    }
 }

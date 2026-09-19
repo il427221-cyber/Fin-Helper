@@ -39,6 +39,15 @@ private class PreviewMockTaxRepository: TaxRepository {
     ): Double {
         return 123.45
     }
+
+    override fun complexDeposit(
+        sum: Double,
+        rate: Double,
+        period: Double,
+        quantity: Double
+    ): Double {
+        return 123.45
+    }
 }
 private class PreviewMockTaxViewModel(
     application: Application,

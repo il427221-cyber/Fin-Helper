@@ -34,7 +34,8 @@ open class TaxViewModel(
                 propertyInput = newValue,
                 areaInput = newValue,
                 shareInput = newValue,
-                periodInput = newValue
+                periodInput = newValue,
+                quantityInput = newValue
                 )
         }
     }
@@ -67,6 +68,9 @@ open class TaxViewModel(
                 ActiveField.PERIOD -> currentState.copy(
                     periodInput = appendNumberIfMissing(currentState.periodInput + number))
 
+                ActiveField.QUANTITY -> currentState.copy(
+                    quantityInput = appendNumberIfMissing(currentState.quantityInput + number))
+
                 ActiveField.NONE -> currentState
             }
         }
@@ -95,6 +99,9 @@ open class TaxViewModel(
                 ActiveField.PERIOD -> currentState.copy(
                     periodInput = appendCommaIfMissing(currentState.periodInput))
 
+                ActiveField.QUANTITY -> currentState.copy(
+                    quantityInput = appendCommaIfMissing(currentState.quantityInput))
+
                 ActiveField.NONE -> currentState
             }
         }
@@ -122,6 +129,9 @@ open class TaxViewModel(
 
                 ActiveField.PERIOD -> currentState.copy(
                     periodInput = deleteOneChar(currentState.periodInput.dropLast(1)))
+
+                ActiveField.QUANTITY -> currentState.copy(
+                    quantityInput = deleteOneChar(currentState.quantityInput.dropLast(1)))
 
                 ActiveField.NONE -> currentState
             }
@@ -258,4 +268,22 @@ open class TaxViewModel(
         }
     }
 
+    fun complexDeposit() {
+        viewModelScope.launch {
+            _taxUiState.update { currentState ->
+                val sum = currentState.sumInput.toDoubleOrNull() ?: 0.0
+                val rate = currentState.rateInput.toDoubleOrNull() ?: 0.0
+                val period = currentState.periodInput.toDoubleOrNull() ?: 0.0
+                val quantity = currentState.quantityInput.toDoubleOrNull() ?: 0.0
+
+                if(sum == 0.0 || rate == 0.0 || period == 0.0 || quantity == 0.0) {
+                    _UIMessages.emit(application.getString(R.string.filling_condition))
+                    return@update currentState
+                }
+
+                val totalSum = taxRepository.complexDeposit(sum, rate, period, quantity)
+                currentState.copy(totalAmount = totalSum)
+            }
+        }
+    }
 }

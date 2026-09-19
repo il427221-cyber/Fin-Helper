@@ -8,11 +8,12 @@ data class TaxUIState(
     val areaInput: String = "",
     val shareInput: String = "",
     val periodInput: String = "",
+    val quantityInput: String = "",
     var activeField: ActiveField = ActiveField.SUM,
     val taxAmount: Double = 0.0,
     val totalAmount: Double = 0.0,
 )
 
 enum class ActiveField {
-    SUM, DEDUCTION, RATE, PROPERTY, AREA, SHARE, PERIOD, NONE
+    SUM, DEDUCTION, RATE, PROPERTY, AREA, SHARE, PERIOD, QUANTITY, NONE
 }
