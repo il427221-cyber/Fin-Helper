@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ru.myproject.finhelper.features.screenshot.ScreenShot
 import ru.myproject.finhelper.features.appBar.TopAppBarBack
+import ru.myproject.finhelper.ui.deposit.complex.ShowComplexDeposit
 import ru.myproject.finhelper.ui.deposit.simple.ShowDeposit
 import ru.myproject.finhelper.ui.profit.monthPayment.ShowPayment
 import ru.myproject.finhelper.ui.profit.roi.ShowROI
@@ -161,6 +162,20 @@ fun MyAppNavGraph(appViewModelFactory: ViewModelProvider.Factory) {
                             onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
                             { modifier ->
                                 ShowDeposit(
+                                    onShowBottomBar = {show -> showBottomBar = show},
+                                    modifier = modifier,
+                                    finViewModelFactory = appViewModelFactory
+                                )
+                            }
+                        )
+                    }
+
+                    composable("ComplexDep_Render") {
+                        ScreenShot(navController = navController, currentRoute = currentRoute,
+                            onShowBottomBar = {show -> showBottomBar = show},
+                            onTriggerCaptureReady = { trigger -> screenShotTriggerCapture = trigger },
+                            { modifier ->
+                                ShowComplexDeposit(
                                     onShowBottomBar = {show -> showBottomBar = show},
                                     modifier = modifier,
                                     finViewModelFactory = appViewModelFactory

@@ -78,4 +78,9 @@
     <string name="calculate_sum">Calculate sum</string>
     <string name="calculate_sum_with_yearly_capitalization">Calculate sum (with yearly capitalization)</string>
     <string name="period_in_years">Period(in years)</string>
+    <string name="deposit_with_interest">Deposit with interest</string>
+    <string name="without_capitalization_with_yearly_capitalization">(without capitalization/with yearly capitalization</string>
+    <string name="with_periodical_capitalization">(with periodical capitalization)</string>
+    <string name="quantity_of_periods_months_per_year">Quantity of periods\n(months per year)</string>
+    <string name="calculate_sum_with_period_capitalization">Calculate sum (with period. capitalization)</string>
 </resources>

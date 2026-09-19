@@ -32,7 +32,21 @@ fun DepositChoice(onShowBottomBar: (Boolean) -> Unit,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextButton(onClick = {navController.navigate("SimpleDep_Render")}) {
-            Text("Вклад под процент")
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(stringResource(R.string.deposit_with_interest))
+                Text(stringResource(R.string.without_capitalization_with_yearly_capitalization))
+            }
+        }
+
+        TextButton(onClick = {navController.navigate("ComplexDep_Render")}) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(stringResource(R.string.deposit_with_interest))
+                Text(stringResource(R.string.with_periodical_capitalization))
+            }
         }
     }
 

@@ -47,6 +47,7 @@ fun TopAppBarBack(
                 || currentRoute == "ROS_Render"
                 || currentRoute == "Payment_Render"
                 || currentRoute == "SimpleDep_Render"
+                || currentRoute == "ComplexDep_Render"
                 ) {
                 IconButton(onClick = onCaptureClick) {
                     Icon(

@@ -61,6 +61,11 @@
     <string name="calculate_sum">Рассчитать сумму</string>
     <string name="calculate_sum_with_yearly_capitalization">Рассчитать сумму (с ежегодной капитализацией)</string>
     <string name="period_in_years">Период (в годах)</string>
+    <string name="deposit_with_interest">Вклад под процент</string>
+    <string name="without_capitalization_with_yearly_capitalization">(без капитализации/с ежегодн.капитализацией)</string>
+    <string name="with_periodical_capitalization">(с периодической капитализацией)</string>
+    <string name="quantity_of_periods_months_per_year">Количество периодов\n(месяцев в год)</string>
+    <string name="calculate_sum_with_period_capitalization">Рассчитать сумму (с период.капитализацией)</string>
 
 
 </resources>
