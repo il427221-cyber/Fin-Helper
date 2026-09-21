@@ -18,5 +18,8 @@
 
 ![Image Alt](https://github.com/il427221-cyber/Fin-Helper/blob/main/deposit.jpg?raw=true)
 
+![Image Alt](https://github.com/il427221-cyber/Fin-Helper/blob/main/screenshot.jpg?raw=true)
+
+
 Технологии: Проект написан полностью на Kotlin на Jetpack Compose с использованием структуры MVVM. Все вычисления делаются в корутинах.
 Данные помещены в data-классы. Есть навигация между экранами. Используются 2 вьюмодели и 2 репозитория.
