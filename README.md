@@ -24,13 +24,17 @@
 ## 📸 Скриншоты приложения
 <details>
 <summary><b>Нажмите, чтобы посмотреть скриншоты интерфейса</b></summary>
-
+  
+### Расчет налогов
 ![Image Alt](https://github.com/il427221-cyber/Fin-Helper/blob/main/taxes.jpg?raw=true)
 
+### Расчет финансовых показателей
 ![Image Alt](https://github.com/il427221-cyber/Fin-Helper/blob/main/profit.jpg?raw=true)
 
+### Расчет суммы вклада
 ![Image Alt](https://github.com/il427221-cyber/Fin-Helper/blob/main/deposit.jpg?raw=true)
 
+### Действия со скриншотами
 ![Image Alt](https://github.com/il427221-cyber/Fin-Helper/blob/main/screenshot.jpg?raw=true)
 
 </details>
